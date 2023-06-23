@@ -33,7 +33,7 @@ public interface IStudentService
      * @param student 学生申请
      * @return 结果
      */
-    public int insertStudent(Student student);
+    public boolean insertStudent(Student student);
 
     /**
      * 修改学生申请

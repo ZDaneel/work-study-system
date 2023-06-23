@@ -47,19 +47,6 @@ public class StudentController extends BaseController
     }
 
     /**
-     * 导出学生申请列表
-     */
-    @PreAuthorize("@ss.hasPermi('workstudy:student:export')")
-    @Log(title = "学生申请", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, Student student)
-    {
-        List<Student> list = studentService.selectStudentList(student);
-        ExcelUtil<Student> util = new ExcelUtil<Student>(Student.class);
-        util.exportExcel(response, list, "学生申请数据");
-    }
-
-    /**
      * 获取学生申请详细信息
      */
     @PreAuthorize("@ss.hasPermi('workstudy:student:query')")
