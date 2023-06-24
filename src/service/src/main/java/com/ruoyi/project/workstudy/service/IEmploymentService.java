@@ -1,6 +1,8 @@
 package com.ruoyi.project.workstudy.service;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.project.workstudy.domain.Employment;
 
 /**
@@ -9,7 +11,7 @@ import com.ruoyi.project.workstudy.domain.Employment;
  * @author zyc
  * @date 2023-06-23
  */
-public interface IEmploymentService 
+public interface IEmploymentService extends IService<Employment>
 {
     /**
      * 查询用工计划
@@ -58,4 +60,9 @@ public interface IEmploymentService
      * @return 结果
      */
     public int deleteEmploymentById(Long id);
+
+    /**
+     * 处理过期用工
+     */
+    public void handlingExpiredEmployment();
 }

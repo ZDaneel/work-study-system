@@ -1,6 +1,8 @@
 package com.ruoyi.project.workstudy.mapper;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ruoyi.project.workstudy.domain.Employment;
 
 /**
@@ -9,7 +11,7 @@ import com.ruoyi.project.workstudy.domain.Employment;
  * @author zyc
  * @date 2023-06-23
  */
-public interface EmploymentMapper 
+public interface EmploymentMapper extends BaseMapper<Employment>
 {
     /**
      * 查询用工计划

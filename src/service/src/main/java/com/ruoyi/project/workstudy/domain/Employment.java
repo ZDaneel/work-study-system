@@ -3,6 +3,7 @@ package com.ruoyi.project.workstudy.domain;
 import java.util.Date;
 import java.util.List;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -58,5 +59,6 @@ public class Employment
     private Long status;
 
     /** 岗位 */
+    @TableField(exist = false)
     private List<EmploymentJob> employmentJobs;
 }

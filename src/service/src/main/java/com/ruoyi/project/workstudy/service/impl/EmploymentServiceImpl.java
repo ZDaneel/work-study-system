@@ -1,10 +1,12 @@
 package com.ruoyi.project.workstudy.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.project.workstudy.domain.EmploymentJob;
 import com.ruoyi.project.workstudy.domain.Job;
 import com.ruoyi.project.workstudy.service.IEmploymentJobService;
@@ -24,7 +26,7 @@ import javax.annotation.Resource;
  * @date 2023-06-23
  */
 @Service
-public class EmploymentServiceImpl implements IEmploymentService {
+public class EmploymentServiceImpl extends ServiceImpl<EmploymentMapper, Employment> implements IEmploymentService {
     @Resource
     private EmploymentMapper employmentMapper;
 
@@ -81,6 +83,7 @@ public class EmploymentServiceImpl implements IEmploymentService {
 
     /**
      * 获取jobName和jobId的映射
+     *
      * @param employmentJobs 用工计划工作列表(只有jobName和limitNumber)
      * @return jobName和jobId的映射
      */
@@ -127,5 +130,26 @@ public class EmploymentServiceImpl implements IEmploymentService {
     @Override
     public int deleteEmploymentById(Long id) {
         return employmentMapper.deleteEmploymentById(id);
+    }
+
+    /**
+     * 1.获取当前的日期
+     * 2.查询所有状态为1且结束日期小于当前日期的用工
+     * 3.将状态改为0
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void handlingExpiredEmployment() {
+        LocalDate currentDate = LocalDate.now();
+        List<Employment> employmentList = list(
+                new LambdaQueryWrapper<Employment>()
+                        .eq(Employment::getStatus, 1)
+                        .lt(Employment::getEndTime, currentDate)
+                        .select(Employment::getId, Employment::getStatus)
+        );
+        for (Employment employment : employmentList) {
+            employment.setStatus(0L);
+        }
+        updateBatchById(employmentList);
     }
 }
