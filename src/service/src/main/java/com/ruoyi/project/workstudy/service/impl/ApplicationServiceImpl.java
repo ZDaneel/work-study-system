@@ -1,6 +1,7 @@
 package com.ruoyi.project.workstudy.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.project.workstudy.domain.Application;
 import com.ruoyi.project.workstudy.domain.EmploymentJob;
@@ -8,9 +9,11 @@ import com.ruoyi.project.workstudy.domain.Job;
 import com.ruoyi.project.workstudy.domain.Student;
 import com.ruoyi.project.workstudy.mapper.ApplicationMapper;
 import com.ruoyi.project.workstudy.service.IApplicationService;
+import com.ruoyi.project.workstudy.service.IEmploymentJobService;
 import com.ruoyi.project.workstudy.service.IJobService;
 import com.ruoyi.project.workstudy.service.IStudentService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -29,6 +32,9 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
 
     @Resource
     private IJobService jobService;
+
+    @Resource
+    private IEmploymentJobService employmentJobService;
 
     /**
      * 比较排序
@@ -72,6 +78,30 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
         // 再增加第二个排序条件，即优先选择经济困难的学生
         filterStudentList.sort(ApplicationServiceImpl::compareStudent);
         return filterStudentList;
+    }
+
+    /**
+     * 添加应聘信息
+     * @param application 应聘信息
+     * @return 应聘信息id
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Long addApplication(Application application) {
+        save(application);
+        updateEmploymentJobCurrentNumber(application);
+        studentService.update(new LambdaUpdateWrapper<Student>()
+                .eq(Student::getId, application.getStudentId())
+                .set(Student::getStatus, 1L));
+        return application.getId();
+    }
+
+    private void updateEmploymentJobCurrentNumber(Application application) {
+        EmploymentJob employmentJob = employmentJobService.getOne(new LambdaQueryWrapper<EmploymentJob>()
+                .eq(EmploymentJob::getJobId, application.getJobId())
+                .eq(EmploymentJob::getEmploymentId, application.getEmploymentId()));
+        employmentJob.setCurrentNumber(employmentJob.getCurrentNumber() + 1);
+        employmentJobService.updateById(employmentJob);
     }
 
     /**

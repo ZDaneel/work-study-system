@@ -60,12 +60,66 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <!-- 填写应聘合同信息 -->
+    <el-dialog
+      title="填写合同信息"
+      v-model="openDialog"
+      width="500px"
+      append-to-body
+    >
+      <el-form ref="applicationRef" :model="form" label-width="120px">
+        <el-form-item label="开始时间" prop="startTime">
+          <el-date-picker
+            clearable
+            v-model="form.startTime"
+            type="date"
+            value-format="YYYY-MM-DD"
+            placeholder="请选择开始时间"
+          >
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="结束时间" prop="endTime">
+          <el-date-picker
+            clearable
+            v-model="form.endTime"
+            type="date"
+            value-format="YYYY-MM-DD"
+            placeholder="请选择结束时间"
+          >
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="日工作时长" prop="hours">
+          <el-input-number v-model="form.hours" :min="1" :max="4" />
+        </el-form-item>
+        <el-form-item label="基础工资" prop="baseSalary">
+          <el-input-number
+            v-model="form.baseSalary"
+            :precision="1"
+            :step="100"
+          />
+        </el-form-item>
+        <el-form-item label="绩效工资" prop="performanceSalary">
+          <el-input-number
+            v-model="form.performanceSalary"
+            :precision="1"
+            :step="100"
+          />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button type="primary" @click="submitForm">确 定</el-button>
+          <el-button @click="cancel">取 消</el-button>
+        </div>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup name="Application">
 import { listAllValidEmployment } from "@/api/workstudy/employment";
-import { listCandidate } from "@/api/workstudy/application";
+import { listCandidate, addApplication } from "@/api/workstudy/application";
 import { reactive } from "vue";
 
 const { proxy } = getCurrentInstance();
@@ -75,21 +129,13 @@ const { business_yes_no } = proxy.useDict("business_yes_no");
 
 const studentList = ref([]);
 const open = ref(false);
+const openDialog = ref(false);
 const loading = ref(true);
-const total = ref(0);
 const options = ref([]);
 const chooseJob = ref(null);
 
 const data = reactive({
   form: {},
-  queryParams: {
-    pageNum: 1,
-    pageSize: 10,
-    status: 0,
-    name: null,
-    studentId: null,
-    department: null,
-  },
 });
 
 const { queryParams, form } = toRefs(data);
@@ -127,6 +173,68 @@ function handleGenerate() {
       loading.value = false;
     }
   });
+}
+
+/** 处理选择 */
+function handleChoose(row) {
+  reset();
+  form.value.studentId = row.id;
+  form.value.employmentId = chooseJob.value[0];
+  form.value.jobId = chooseJob.value[1];
+  openDialog.value = true;
+}
+
+// 取消按钮
+function cancel() {
+  openDialog.value = false;
+  reset();
+}
+
+// 表单重置
+function reset() {
+  form.value = {
+    studentId: null,
+    employmentId: null,
+    jobId: null,
+    startTime: null,
+    endTime: null,
+    hours: null,
+    baseSalary: null,
+    performanceSalary: null,
+  };
+  proxy.resetForm("applicationRef");
+}
+
+/** 提交按钮 */
+function submitForm() {
+  proxy.$refs["applicationRef"].validate((valid) => {
+    if (valid) {
+      console.log(form.value);
+      addApplication(form.value).then((res) => {
+        if (res.code === 200) {
+          proxy.$message.success("添加成功");
+          openDialog.value = false;
+          handleGenerate();
+          const applicationId = res.data;
+          // 下载合同
+          handleExport({
+            applicationId,
+          });
+        }
+      });
+    }
+  });
+}
+
+/** 导出合同书 */
+function handleExport(row) {
+  proxy.download(
+    "workstudy/application/export",
+    {
+      ...row,
+    },
+    `application_${new Date().getTime()}.docx`
+  );
 }
 
 getJobs();

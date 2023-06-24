@@ -18,4 +18,11 @@ public interface IApplicationService extends IService<Application> {
      * @return 候选人列表
      */
     List<Student> listCandidate(EmploymentJob employmentJob);
+
+    /**
+     * 新增应聘信息
+     * @param application 应聘信息
+     * @return 结果
+     */
+    Long addApplication(Application application);
 }

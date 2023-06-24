@@ -63,7 +63,7 @@
 
     <select id="filterStudent" resultMap="StudentResult">
         <include refid="selectStudentVo"/>
-        where job_id = #{jobId} or is_assigned_accept = 1
+        where status = 0 and (job_id = #{jobId} or is_assigned_accept = 1)
     </select>
 
     <insert id="insertStudent" parameterType="com.ruoyi.project.workstudy.domain.Student" useGeneratedKeys="true"
