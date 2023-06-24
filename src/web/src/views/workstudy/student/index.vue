@@ -135,14 +135,6 @@
             v-hasPermi="['workstudy:student:edit']"
             >修改</el-button
           >
-          <el-button
-            link
-            type="primary"
-            icon="Delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['workstudy:student:remove']"
-            >删除</el-button
-          >
         </template>
       </el-table-column>
     </el-table>

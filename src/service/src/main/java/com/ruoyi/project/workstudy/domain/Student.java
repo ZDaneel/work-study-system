@@ -74,5 +74,6 @@ public class Student
     @Excel(name = "是否接受分配")
     private Long isAssignedAccept;
 
+    @TableField(exist = false)
     private List<String> jobIntentions;
 }

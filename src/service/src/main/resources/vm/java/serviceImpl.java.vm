@@ -17,7 +17,9 @@ import ${packageName}.domain.${subClassName};
 #end
 import ${packageName}.mapper.${ClassName}Mapper;
 import ${packageName}.domain.${ClassName};
-import ${packageName}.service.I${ClassName}Service;
+import
+
+import javax.annotation.Resource; ${packageName}.service.I${ClassName}Service;
 
 /**
  * ${functionName}Service业务层处理
@@ -28,7 +30,7 @@ import ${packageName}.service.I${ClassName}Service;
 @Service
 public class ${ClassName}ServiceImpl implements I${ClassName}Service 
 {
-    @Autowired
+    @Resource
     private ${ClassName}Mapper ${className}Mapper;
 
     /**
