@@ -152,4 +152,13 @@ public class EmploymentServiceImpl extends ServiceImpl<EmploymentMapper, Employm
         }
         updateBatchById(employmentList);
     }
+
+    /**
+     * 查询所有有效的用工计划和未满人数的岗位
+     * @return 符合的用工计划列表
+     */
+    @Override
+    public List<Employment> listAllValidEmployments() {
+        return employmentMapper.listAllValidEmployments();
+    }
 }

@@ -42,3 +42,11 @@ export function delEmployment(id) {
     method: 'delete'
   })
 }
+
+// 查询所有有效的用工计划和岗位列表
+export function listAllValidEmployment() {
+  return request({
+    url: '/workstudy/employment/list-all-valid',
+    method: 'get',
+  })
+}

@@ -47,6 +47,14 @@ public class EmploymentController extends BaseController
     }
 
     /**
+     * 查询所有有效的用工计划和岗位列表
+     */
+    @GetMapping("/list-all-valid")
+    public AjaxResult listAllValidEmployments(){
+        return AjaxResult.success(employmentService.listAllValidEmployments());
+    }
+
+    /**
      * 导出用工计划列表
      */
     @PreAuthorize("@ss.hasPermi('workstudy:employment:export')")

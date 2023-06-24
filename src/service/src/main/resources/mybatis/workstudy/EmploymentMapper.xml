@@ -53,6 +53,13 @@
         where employment.id = #{id}
     </select>
 
+    <!-- status为1且未满员 -->
+    <select id="listAllValidEmployments" resultMap="EmploymentResult">
+        <include refid="selectEmploymentVo"/>
+        where status = 1
+        and limit_number > current_number
+    </select>
+
     <insert id="insertEmployment" parameterType="com.ruoyi.project.workstudy.domain.Employment" useGeneratedKeys="true"
             keyProperty="id">
         insert into employment

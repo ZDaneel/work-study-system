@@ -60,4 +60,10 @@ public interface EmploymentMapper extends BaseMapper<Employment>
      * @return 结果
      */
     public int deleteEmploymentByIds(Long[] ids);
+
+    /**
+     * 查询所有有效的用工计划
+     * @return 用工计划列表
+     */
+    public List<Employment> listAllValidEmployments();
 }

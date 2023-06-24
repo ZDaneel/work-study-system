@@ -65,4 +65,10 @@ public interface IEmploymentService extends IService<Employment>
      * 处理过期用工
      */
     public void handlingExpiredEmployment();
+
+    /**
+     * 查询所有有效的用工计划和岗位列表
+     * @return 结果
+     */
+    public List<Employment> listAllValidEmployments();
 }
