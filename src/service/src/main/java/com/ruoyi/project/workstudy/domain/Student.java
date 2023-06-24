@@ -74,6 +74,11 @@ public class Student
     @Excel(name = "是否接受分配")
     private Long isAssignedAccept;
 
+    /** 岗位意向 */
     @TableField(exist = false)
     private List<String> jobIntentions;
+
+    /** 最终得分 */
+    @TableField(exist = false)
+    private Double score;
 }

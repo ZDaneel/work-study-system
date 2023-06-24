@@ -1,6 +1,9 @@
 package com.ruoyi.project.workstudy.service;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.ruoyi.project.workstudy.domain.EmploymentJob;
 import com.ruoyi.project.workstudy.domain.Student;
 
 /**
@@ -9,7 +12,7 @@ import com.ruoyi.project.workstudy.domain.Student;
  * @author zyc
  * @date 2023-06-22
  */
-public interface IStudentService 
+public interface IStudentService extends IService<Student>
 {
     /**
      * 查询学生申请
@@ -58,4 +61,11 @@ public interface IStudentService
      * @return 结果
      */
     public int deleteStudentById(Long id);
+
+    /**
+     * 过滤：去除岗位意向不一致且不接受分配的接受分配的
+     * @param employmentJob 只包括用工计划id和岗位id
+     * @return 候选人列表
+     */
+    public List<Student> filterStudent(EmploymentJob employmentJob);
 }

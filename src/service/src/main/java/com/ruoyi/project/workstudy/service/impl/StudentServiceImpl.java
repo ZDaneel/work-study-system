@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ruoyi.project.workstudy.domain.EmploymentJob;
 import com.ruoyi.project.workstudy.domain.Job;
 import com.ruoyi.project.workstudy.domain.StudentJob;
 import com.ruoyi.project.workstudy.service.IJobService;
@@ -26,7 +28,7 @@ import javax.annotation.Resource;
  * @date 2023-06-22
  */
 @Service
-public class StudentServiceImpl implements IStudentService {
+public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements IStudentService {
     @Resource
     private StudentMapper studentMapper;
 
@@ -86,7 +88,6 @@ public class StudentServiceImpl implements IStudentService {
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
     public int updateStudent(Student student) {
-        System.out.println(student);
         List<Long> updatedJobIds = jobNames2Ids(student.getJobIntentions(), jobService.list());
         List<StudentJob> studentJobList = studentJobService.list(new LambdaQueryWrapper<StudentJob>()
                 .eq(StudentJob::getStudentId, student.getId()));
@@ -138,6 +139,17 @@ public class StudentServiceImpl implements IStudentService {
     @Override
     public int deleteStudentById(Long id) {
         return studentMapper.deleteStudentById(id);
+    }
+
+    /**
+     * 筛选学生
+     *
+     * @param employmentJob 只有jobId和employmentId有值
+     * @return 符合条件的学生列表
+     */
+    @Override
+    public List<Student> filterStudent(EmploymentJob employmentJob) {
+        return studentMapper.filterStudent(employmentJob.getJobId());
     }
 
     /**

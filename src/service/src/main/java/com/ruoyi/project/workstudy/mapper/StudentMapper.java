@@ -1,6 +1,9 @@
 package com.ruoyi.project.workstudy.mapper;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.ruoyi.project.workstudy.domain.EmploymentJob;
 import com.ruoyi.project.workstudy.domain.Student;
 
 /**
@@ -9,7 +12,7 @@ import com.ruoyi.project.workstudy.domain.Student;
  * @author zyc
  * @date 2023-06-22
  */
-public interface StudentMapper 
+public interface StudentMapper extends BaseMapper<Student>
 {
     /**
      * 查询学生申请
@@ -58,4 +61,11 @@ public interface StudentMapper
      * @return 结果
      */
     public int deleteStudentByIds(Long[] ids);
+
+    /**
+     * 查询过滤后的候选人列表
+     * @param jobId 岗位id
+     * @return 候选人列表
+     */
+    public List<Student> filterStudent(Long jobId);
 }

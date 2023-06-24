@@ -43,6 +43,7 @@
           />
         </template>
       </el-table-column>
+      <el-table-column label="得分" align="center" prop="score" />
       <el-table-column
         label="操作"
         align="center"
@@ -52,7 +53,7 @@
           <el-button
             link
             type="primary"
-            icon="Edit"
+            icon="Aim"
             @click="handleChoose(scope.row)"
             >选择</el-button
           >
@@ -64,7 +65,7 @@
 
 <script setup name="Application">
 import { listAllValidEmployment } from "@/api/workstudy/employment";
-import { listJob } from "@/api/workstudy/job";
+import { listCandidate } from "@/api/workstudy/application";
 import { reactive } from "vue";
 
 const { proxy } = getCurrentInstance();
@@ -76,7 +77,7 @@ const studentList = ref([]);
 const open = ref(false);
 const loading = ref(true);
 const total = ref(0);
-const options = ref([])
+const options = ref([]);
 const chooseJob = ref(null);
 
 const data = reactive({
@@ -112,9 +113,20 @@ function getJobs() {
 
 /** 处理候选名单的生成 */
 function handleGenerate() {
-  // TODO
-  open.value = true;
-  loading.value = false;
+  if (!chooseJob.value) {
+    return;
+  }
+  const [employmentId, jobId] = chooseJob.value;
+  listCandidate({
+    employmentId,
+    jobId,
+  }).then((res) => {
+    if (res.code === 200) {
+      studentList.value = res.data;
+      open.value = true;
+      loading.value = false;
+    }
+  });
 }
 
 getJobs();
