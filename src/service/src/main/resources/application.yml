@@ -140,3 +140,13 @@ gen:
   autoRemovePre: false
   # 表前缀（生成类名不会包含表前缀，多个用逗号分隔）
   tablePrefix: sys_
+
+# 导出文件配置
+export:
+  laborContract:
+    # 临时存放路径
+    tempDir: ./home/temp
+    # 临时文件名称
+    tempFileName: temp.docx
+    # 导出文件模板
+    templatePath: word/LaborContract.docx

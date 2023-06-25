@@ -4,6 +4,7 @@ import com.ruoyi.framework.aspectj.lang.annotation.Log;
 import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
 import com.ruoyi.framework.web.controller.BaseController;
 import com.ruoyi.framework.web.domain.AjaxResult;
+import com.ruoyi.project.tool.constant.ExportConstant;
 import com.ruoyi.project.tool.utils.WordUtil;
 import com.ruoyi.project.workstudy.domain.Application;
 import com.ruoyi.project.workstudy.domain.Employment;
@@ -31,6 +32,9 @@ public class ApplicationController extends BaseController {
     @Resource
     private IApplicationService applicationService;
 
+    @Resource
+    private ExportConstant exportConstant;
+
     /**
      * 查询用工计划列表
      */
@@ -55,9 +59,9 @@ public class ApplicationController extends BaseController {
      */
     @PostMapping("/export")
     public void export(HttpServletResponse response, HttpServletRequest request, Application applicationOnlyId) {
-        String templatePath = "word/LaborContract.docx";
-        String tempDir = "./home/temp";
-        String fileName = "temp.docx";
+        String templatePath = exportConstant.getTemplatePath();
+        String tempDir = exportConstant.getTempDir();
+        String fileName = exportConstant.getTempFileName();
         Map<String, Object> params = new HashMap<>(8);
         Application application = applicationService.getContractInfoById(applicationOnlyId.getId());
         params.put("partA", application.getEmploymentPartyA());
