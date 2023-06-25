@@ -104,6 +104,11 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
         return applicationMapper.getContractInfoById(id);
     }
 
+    @Override
+    public List<Application> listApplication(Application application) {
+        return applicationMapper.listApplication(application);
+    }
+
     private void updateEmploymentJobCurrentNumber(Application application) {
         EmploymentJob employmentJob = employmentJobService.getOne(new LambdaQueryWrapper<EmploymentJob>()
                 .eq(EmploymentJob::getJobId, application.getJobId())

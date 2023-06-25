@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.project.workstudy.mapper.ApplicationMapper">
 
-    <resultMap type="com.ruoyi.project.workstudy.domain.Application" id="ApplicationResult">
+    <resultMap type="com.ruoyi.project.workstudy.domain.Application" id="ContractResult">
         <result property="employmentPartyA" column="department"/>
         <result property="studentName" column="student_name"/>
         <result property="jobName" column="job_name"/>
@@ -15,13 +15,26 @@
         <result property="performanceSalary" column="performance_salary"/>
     </resultMap>
 
-    <select id="getContractInfoById" parameterType="Long" resultMap="ApplicationResult">
-        select employment.department as department,
-               student.name as student_name,
-               job.name as job_name,
+    <resultMap type="com.ruoyi.project.workstudy.domain.Application" id="ApplicationResult">
+        <result property="id" column="applicationId"/>
+        <result property="employmentPartyA" column="department"/>
+        <result property="studentName" column="student_name"/>
+        <result property="jobName" column="job_name"/>
+        <result property="hours" column="hours"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="baseSalary" column="base_salary"/>
+        <result property="performanceSalary" column="performance_salary"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <select id="getContractInfoById" parameterType="Long" resultMap="ContractResult">
+        select employment.department  as department,
+               student.name           as student_name,
+               job.name               as job_name,
                hours,
                application.start_time as start_time,
-               application.end_time as end_time,
+               application.end_time   as end_time,
                base_salary,
                performance_salary
         from application
@@ -29,6 +42,29 @@
                  left join employment on employment.id = application.employment_id
                  left join job on application.job_id = job.id
         where application.id = #{id}
+    </select>
+
+    <select id="listApplication" parameterType="com.ruoyi.project.workstudy.domain.Application" resultMap="ApplicationResult">
+        select
+            application.id as applicationId,
+            employment.department as department,
+            student.name as student_name,
+            job.name as job_name,
+            hours,
+            application.start_time as start_time,
+            application.end_time as end_time,
+            base_salary,
+            performance_salary,
+            application.status as status
+        from application
+            left join student on student.id = application.student_id
+            left join employment on employment.id = application.employment_id
+            left join job on application.job_id = job.id
+        <where>
+            <if test="jobId != null ">and application.job_id = #{jobId}</if>
+            <if test="employmentId != null ">and application.employment_id = #{employmentId}</if>
+            <if test="status != null ">and application.status = #{status}</if>
+        </where>
     </select>
 
 </mapper>

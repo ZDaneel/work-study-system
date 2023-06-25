@@ -32,4 +32,11 @@ public interface IApplicationService extends IService<Application> {
      * @return 合同信息
      */
     Application getContractInfoById(Long id);
+
+    /**
+     * 查询合同列表
+     * @param application 查询条件，可能包括状态、jobId和employmentId
+     * @return 合同列表
+     */
+    List<Application> listApplication(Application application);
 }

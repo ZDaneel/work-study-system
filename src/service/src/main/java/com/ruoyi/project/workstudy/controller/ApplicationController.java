@@ -4,13 +4,12 @@ import com.ruoyi.framework.aspectj.lang.annotation.Log;
 import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
 import com.ruoyi.framework.web.controller.BaseController;
 import com.ruoyi.framework.web.domain.AjaxResult;
+import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.tool.constant.ExportConstant;
 import com.ruoyi.project.tool.utils.WordUtil;
 import com.ruoyi.project.workstudy.domain.Application;
-import com.ruoyi.project.workstudy.domain.Employment;
 import com.ruoyi.project.workstudy.domain.EmploymentJob;
 import com.ruoyi.project.workstudy.service.IApplicationService;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -74,5 +73,16 @@ public class ApplicationController extends BaseController {
         params.put("startDate", formatter.format(application.getStartTime()));
         params.put("endDate", formatter.format(application.getEndTime()));
         WordUtil.exportWord(templatePath, tempDir, fileName, params, request, response);
+    }
+
+    /**
+     * 查询合同列表
+     */
+    @GetMapping("/applied-list")
+    public TableDataInfo list(Application application)
+    {
+        startPage();
+        List<Application> list = applicationService.listApplication(application);
+        return getDataTable(list);
     }
 }
