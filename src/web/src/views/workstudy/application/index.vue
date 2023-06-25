@@ -11,6 +11,12 @@
       </el-form-item>
     </el-form>
 
+    <el-row v-if="open" style="margin: 1em;">
+      岗位限制数量：{{chooseJobDetail.limitNumber}}
+      <br />
+      岗位当前已招聘人数：{{chooseJobDetail.currentNumber}} 
+    </el-row>
+
     <el-table v-loading="loading" :data="studentList" v-if="open">
       <el-table-column label="姓名" align="center" prop="name" />
       <el-table-column label="学号" align="center" prop="studentId" />
@@ -120,6 +126,7 @@
 <script setup name="Application">
 import { listAllValidEmployment } from "@/api/workstudy/employment";
 import { listCandidate, addApplication } from "@/api/workstudy/application";
+import { getJobDetail } from "@/api/workstudy/job";
 import { reactive } from "vue";
 
 const { proxy } = getCurrentInstance();
@@ -133,6 +140,7 @@ const openDialog = ref(false);
 const loading = ref(true);
 const options = ref([]);
 const chooseJob = ref(null);
+const chooseJobDetail = ref(null);
 
 const data = reactive({
   form: {},
@@ -163,6 +171,14 @@ function handleGenerate() {
     return;
   }
   const [employmentId, jobId] = chooseJob.value;
+  getJobDetail({
+    employmentId,
+    jobId,
+  }).then((res) => {
+    if (res.code === 200) {
+      chooseJobDetail.value = res.data; 
+    }
+  });
   listCandidate({
     employmentId,
     jobId,
@@ -209,7 +225,6 @@ function reset() {
 function submitForm() {
   proxy.$refs["applicationRef"].validate((valid) => {
     if (valid) {
-      console.log(form.value);
       addApplication(form.value).then((res) => {
         if (res.code === 200) {
           proxy.$message.success("添加成功");
@@ -217,9 +232,7 @@ function submitForm() {
           handleGenerate();
           const applicationId = res.data;
           // 下载合同
-          handleExport({
-            applicationId,
-          });
+          handleExport(applicationId);
         }
       });
     }
@@ -227,13 +240,13 @@ function submitForm() {
 }
 
 /** 导出合同书 */
-function handleExport(row) {
+function handleExport(applicationId) {
   proxy.download(
     "workstudy/application/export",
     {
-      ...row,
+      id: applicationId,
     },
-    `application_${new Date().getTime()}.docx`
+    `劳动合同书_${new Date().getTime()}.docx`
   );
 }
 

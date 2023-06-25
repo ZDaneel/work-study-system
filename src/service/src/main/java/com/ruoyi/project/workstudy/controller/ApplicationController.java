@@ -4,6 +4,7 @@ import com.ruoyi.framework.aspectj.lang.annotation.Log;
 import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
 import com.ruoyi.framework.web.controller.BaseController;
 import com.ruoyi.framework.web.domain.AjaxResult;
+import com.ruoyi.project.tool.utils.WordUtil;
 import com.ruoyi.project.workstudy.domain.Application;
 import com.ruoyi.project.workstudy.domain.Employment;
 import com.ruoyi.project.workstudy.domain.EmploymentJob;
@@ -12,8 +13,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author leenadz
@@ -49,10 +54,21 @@ public class ApplicationController extends BaseController {
      * 导出合同
      */
     @PostMapping("/export")
-    public void export(HttpServletResponse response, Application application) {
-
-//        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-//        response.setCharacterEncoding("utf-8");
-//        wb.write(response.getOutputStream());
+    public void export(HttpServletResponse response, HttpServletRequest request, Application applicationOnlyId) {
+        String templatePath = "word/LaborContract.docx";
+        String tempDir = "./home/temp";
+        String fileName = "temp.docx";
+        Map<String, Object> params = new HashMap<>(8);
+        Application application = applicationService.getContractInfoById(applicationOnlyId.getId());
+        params.put("partA", application.getEmploymentPartyA());
+        params.put("partB", application.getStudentName());
+        params.put("job", application.getJobName());
+        params.put("hours", application.getHours());
+        params.put("baseSalary", application.getBaseSalary());
+        params.put("performanceSalary", application.getPerformanceSalary());
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日");
+        params.put("startDate", formatter.format(application.getStartTime()));
+        params.put("endDate", formatter.format(application.getEndTime()));
+        WordUtil.exportWord(templatePath, tempDir, fileName, params, request, response);
     }
 }

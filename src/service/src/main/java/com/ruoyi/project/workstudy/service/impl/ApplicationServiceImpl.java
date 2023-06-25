@@ -36,6 +36,9 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
     @Resource
     private IEmploymentJobService employmentJobService;
 
+    @Resource
+    private ApplicationMapper applicationMapper;
+
     /**
      * 比较排序
      * @param o1 学生1
@@ -94,6 +97,11 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
                 .eq(Student::getId, application.getStudentId())
                 .set(Student::getStatus, 1L));
         return application.getId();
+    }
+
+    @Override
+    public Application getContractInfoById(Long id) {
+        return applicationMapper.getContractInfoById(id);
     }
 
     private void updateEmploymentJobCurrentNumber(Application application) {

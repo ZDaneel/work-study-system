@@ -31,6 +31,12 @@ public class Application {
      */
     private Long studentId;
 
+    /**
+     * 学生姓名
+     */
+    @TableField(exist = false)
+    private String studentName;
+
 
     /**
      * 用工计划id
@@ -38,9 +44,21 @@ public class Application {
     private Long employmentId;
 
     /**
+     * 用工计划甲方
+     */
+    @TableField(exist = false)
+    private String employmentPartyA;
+
+    /**
      * 岗位id
      */
     private Integer jobId;
+
+    /**
+     * 岗位名称
+     */
+    @TableField(exist = false)
+    private String jobName;
 
     /**
      * 创建时间

@@ -25,4 +25,11 @@ public interface IApplicationService extends IService<Application> {
      * @return 结果
      */
     Long addApplication(Application application);
+
+    /**
+     * 根据id查询合同信息
+     * @param id application id
+     * @return 合同信息
+     */
+    Application getContractInfoById(Long id);
 }
