@@ -155,7 +155,7 @@ function getJobs() {
       const employmentJobs = res.data;
       options.value = employmentJobs.map((item) => ({
         value: item.id,
-        label: item.content,
+        label: item.department,
         children: item.employmentJobs.map((job) => ({
           value: job.jobId,
           label: job.jobName,
