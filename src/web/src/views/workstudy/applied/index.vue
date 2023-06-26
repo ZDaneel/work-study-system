@@ -78,7 +78,12 @@
           <span>{{ parseTime(scope.row.endTime, "{y}-{m}-{d}") }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="月标准工作天数" align="center" prop="standardDays" width="120"/>
+      <el-table-column
+        label="月标准工作天数"
+        align="center"
+        prop="standardDays"
+        width="120"
+      />
       <el-table-column label="日工作时长" align="center" prop="hours" />
       <el-table-column label="基础工资" align="center" prop="baseSalary" />
       <el-table-column
@@ -104,12 +109,7 @@
             @click="handleLink(scope.row.id)"
             >考核</el-button
           >
-          <el-button
-            link
-            type="warning"
-            icon="SwitchButton"
-            >终止</el-button
-          >
+          <el-button link type="warning" icon="SwitchButton">终止</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -125,8 +125,9 @@
 </template>
 
 <script setup name="Applied">
-import { listAllValidEmployment } from "@/api/workstudy/employment";
+import { listAllEmployment } from "@/api/workstudy/employment";
 import { listApplied } from "@/api/workstudy/application";
+import { getAssessmentCount } from "@/api/workstudy/assessment";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useRouter } from "vue-router";
 
@@ -168,7 +169,7 @@ function getList() {
 
 /** 获取用工计划和岗位列表 */
 function getJobs() {
-  listAllValidEmployment().then((res) => {
+  listAllEmployment().then((res) => {
     if (res.code === 200) {
       const employmentJobs = res.data;
       options.value = employmentJobs.map((item) => ({
@@ -227,20 +228,47 @@ function handleExport() {
       const totalNum = total.value;
       const year = value.split("-")[0];
       const month = value.split("-")[1];
-      // 校验是否都填写了考核
-      // TODO
-      const params = {
-        ...queryParams.value,
+      // 从appliedList中获取所有的合同id
+      const appliedIds = appliedList.value.map((item) => item.id);
+      const countParams = {
+        appliedIds,
         year,
         month,
       };
-      proxy.download(
-        "workstudy/salary/export",
-        {
-          ...params,
-        },
-        `酬金发放单_${value}.xlsx`
-      );
+      // 判断选择的年月对应的合同是否都完成了考核
+      getAssessmentCount(countParams)
+        .then((res) => {
+          if (res.code === 200) {
+            console.log(res);
+            const count = res.data;
+            if (count === totalNum) {
+              const params = {
+                ...queryParams.value,
+                year,
+                month,
+              };
+              proxy.download(
+                "workstudy/salary/export",
+                {
+                  ...params,
+                },
+                `酬金发放单_${value}.xlsx`
+              );
+            } else {
+              ElMessage({
+                type: "warning",
+                message: "存在未考核的合同",
+              });
+            }
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          ElMessage({
+            type: "error",
+            message: "导出失败",
+          });
+        });
     })
     .catch(() => {
       ElMessage({

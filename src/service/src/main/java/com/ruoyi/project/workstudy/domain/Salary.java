@@ -25,18 +25,22 @@ public class Salary {
     private String studentId;
     @Excel(name = "手机号")
     private String phone;
-    @Excel(name = "基本工资")
+    @Excel(name = "合同基本工资")
     private Double baseSalary;
-    @Excel(name = "绩效工资")
-    private Double performanceSalary;
-    @Excel(name = "总工资")
-    private Double totalSalary;
-    /** 基本绩效工资 */
+    @Excel(name = "合同绩效工资")
     private Double basePerformanceSalary;
+    @Excel(name = "考核得分百分比")
+    private String scorePercentage;
+    @Excel(name = "标准工作天数")
+    private Integer standardDays;
+    @Excel(name = "实际工作天数")
+    private Integer days;
+    @Excel(name = "实际基本工资")
+    private String actualBaseSalary;
+    @Excel(name = "实际绩效工资")
+    private String actualPerformanceSalary;
+    @Excel(name = "总工资")
+    private String totalSalary;
     /** 绩效计算得分 */
     private Long score;
-    /** 标准工作天数 */
-    private Integer standardDays;
-    /** 实际工作天数 */
-    private Integer days;
 }
