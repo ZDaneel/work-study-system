@@ -143,7 +143,10 @@ const openDialog = ref(false);
 const loading = ref(true);
 const options = ref([]);
 const chooseJob = ref(null);
-const chooseJobDetail = ref(null);
+const chooseJobDetail = ref({
+  limitNumber: 0,
+  currentNumber: 0,
+});
 
 const data = reactive({
   form: {},

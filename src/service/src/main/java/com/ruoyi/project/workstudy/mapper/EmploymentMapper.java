@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ruoyi.project.workstudy.domain.Employment;
+import com.ruoyi.project.workstudy.domain.EmploymentJob;
 
 /**
  * 用工计划Mapper接口
@@ -72,4 +73,11 @@ public interface EmploymentMapper extends BaseMapper<Employment>
      * @return 用工计划列表
      */
     public List<Employment> listValidEmployments();
+
+    /**
+     * 查询用工计划下的岗位(拆分嵌套映射解决分页插件问题)
+     * @param id employmentId
+     * @return 岗位列表
+     */
+    public List<EmploymentJob> selectEmploymentJobs(Long id);
 }

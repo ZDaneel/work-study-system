@@ -17,7 +17,7 @@
         <result property="studentId" column="student_id"/>
         <result property="isEcoHard" column="is_eco_hard"/>
         <result property="isAssignedAccept" column="is_assigned_accept"/>
-        <collection property="jobIntentions" ofType="string">
+        <collection property="jobIntentions" ofType="string" select="selectStudentJobIntentions" column="id">
             <result column="job_name"/>
         </collection>
     </resultMap>
@@ -34,12 +34,16 @@
                status,
                student.student_id,
                is_eco_hard,
-               is_assigned_accept,
-               job.name as job_name
+               is_assigned_accept
         from student
-            left join student_job on student.id = student_job.student_id
-            left join job on student_job.job_id = job.id
     </sql>
+
+    <select id="selectStudentJobIntentions" resultType="string">
+        SELECT job.name as job_name
+        FROM student_job
+                 left join job ON student_job.job_id = job.id
+        WHERE student_job.student_id = #{id}
+    </select>
 
     <select id="selectStudentList" parameterType="com.ruoyi.project.workstudy.domain.Student" resultMap="StudentResult">
         <include refid="selectStudentVo"/>
@@ -54,6 +58,10 @@
             <if test="isEcoHard != null ">and is_eco_hard = #{isEcoHard}</if>
             <if test="isAssignedAccept != null ">and is_assigned_accept = #{isAssignedAccept}</if>
         </where>
+    </select>
+
+    <select id="selectJobName" resultType="string">
+
     </select>
 
     <select id="selectStudentById" parameterType="Long" resultMap="StudentResult">

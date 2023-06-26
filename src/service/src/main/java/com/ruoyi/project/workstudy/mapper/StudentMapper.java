@@ -68,4 +68,11 @@ public interface StudentMapper extends BaseMapper<Student>
      * @return 候选人列表
      */
     public List<Student> filterStudent(Long jobId);
+
+    /**
+     * 查询学生的求职意向(拆分嵌套映射解决分页插件问题)
+     * @param id 学生id
+     * @return 求职意向列表
+     */
+    List<String> selectStudentJobIntentions(Long id);
 }

@@ -13,7 +13,8 @@
         <result property="createdTime" column="created_time"/>
         <result property="updatedTime" column="updated_time"/>
         <result property="status" column="status"/>
-        <collection property="employmentJobs" ofType="com.ruoyi.project.workstudy.domain.EmploymentJob">
+        <collection property="employmentJobs" ofType="com.ruoyi.project.workstudy.domain.EmploymentJob"
+                    select="selectEmploymentJobs" column="id">
             <result property="jobId" column="job_id"/>
             <result property="jobName" column="job_name"/>
             <result property="limitNumber" column="limit_number"/>
@@ -29,15 +30,22 @@
                end_time,
                created_time,
                updated_time,
-               status,
-               job_id,
-               job.name as job_name,
-               limit_number,
-               current_number
+               status
         from employment
-                 left join employment_job on employment.id = employment_job.employment_id
-                 left join job on employment_job.job_id = job.id
     </sql>
+
+    <!-- 获取EmploymentJobs的查询 -->
+    <select id="selectEmploymentJobs" resultType="com.ruoyi.project.workstudy.domain.EmploymentJob">
+        SELECT employment_job.job_id         AS job_id,
+               job.name                      AS job_name,
+               employment_job.limit_number   AS limit_number,
+               employment_job.current_number AS current_number
+        FROM employment_job
+                 INNER JOIN
+             job ON employment_job.job_id = job.id
+        WHERE employment_job.employment_id = #{id}
+    </select>
+
 
     <select id="selectEmploymentList" parameterType="com.ruoyi.project.workstudy.domain.Employment"
             resultMap="EmploymentResult">
