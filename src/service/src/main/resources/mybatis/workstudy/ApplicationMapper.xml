@@ -26,6 +26,7 @@
         <result property="baseSalary" column="base_salary"/>
         <result property="performanceSalary" column="performance_salary"/>
         <result property="status" column="status"/>
+        <result property="standardDays" column="standard_days"/>
     </resultMap>
 
     <select id="getContractInfoById" parameterType="Long" resultMap="ContractResult">
@@ -36,7 +37,8 @@
                application.start_time as start_time,
                application.end_time   as end_time,
                base_salary,
-               performance_salary
+               performance_salary,
+               standard_days
         from application
                  left join student on student.id = application.student_id
                  left join employment on employment.id = application.employment_id

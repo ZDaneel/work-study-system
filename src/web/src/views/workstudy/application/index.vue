@@ -95,6 +95,9 @@
           >
           </el-date-picker>
         </el-form-item>
+        <el-form-item label="月标准工作天数" prop="standardDays">
+          <el-input-number v-model="form.standardDays" :min="1" :max="31" />
+        </el-form-item>
         <el-form-item label="日工作时长" prop="hours">
           <el-input-number v-model="form.hours" :min="1" :max="4" />
         </el-form-item>
@@ -146,7 +149,7 @@ const data = reactive({
   form: {},
 });
 
-const { queryParams, form } = toRefs(data);
+const { form } = toRefs(data);
 
 /** 获取用工计划和岗位列表 */
 function getJobs() {
@@ -179,6 +182,7 @@ function handleGenerate() {
       chooseJobDetail.value = res.data; 
     }
   });
+
   listCandidate({
     employmentId,
     jobId,
@@ -215,6 +219,7 @@ function reset() {
     startTime: null,
     endTime: null,
     hours: null,
+    standardDays: null,
     baseSalary: null,
     performanceSalary: null,
   };

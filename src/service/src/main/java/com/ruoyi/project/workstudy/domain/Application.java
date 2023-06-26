@@ -99,4 +99,9 @@ public class Application {
      * 状态 0-失效 1-生效 
      */
     private Long status;
+
+    /**
+     * 标准工作日
+     */
+    private Integer standardDays;
 }

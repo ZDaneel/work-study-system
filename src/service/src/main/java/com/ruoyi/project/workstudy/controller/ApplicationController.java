@@ -66,6 +66,7 @@ public class ApplicationController extends BaseController {
         params.put("partA", application.getEmploymentPartyA());
         params.put("partB", application.getStudentName());
         params.put("job", application.getJobName());
+        params.put("standardDays", application.getStandardDays());
         params.put("hours", application.getHours());
         params.put("baseSalary", application.getBaseSalary());
         params.put("performanceSalary", application.getPerformanceSalary());
