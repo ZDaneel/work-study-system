@@ -2,7 +2,6 @@ package com.ruoyi.project.workstudy.controller;
 
 import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.framework.aspectj.lang.annotation.Log;
 import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
 import com.ruoyi.framework.web.controller.BaseController;
@@ -10,18 +9,15 @@ import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.tool.constant.ExportConstant;
 import com.ruoyi.project.workstudy.domain.Assessment;
-import com.ruoyi.project.workstudy.domain.Employment;
+import com.ruoyi.project.workstudy.domain.dto.AssessmentCountDTO;
 import com.ruoyi.project.workstudy.service.IAssessmentService;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -95,5 +91,18 @@ public class AssessmentController extends BaseController {
                 .sheet()
                 .doFill(params);
         out.flush();
+    }
+
+    /**
+     * 岗位、状态、年月查询待考核数量
+     */
+    @GetMapping("/count")
+    public AjaxResult count(AssessmentCountDTO assessmentCountDTO) {
+        return AjaxResult.success(assessmentService.count(
+                new LambdaQueryWrapper<Assessment>()
+                        .eq(Assessment::getYear, assessmentCountDTO.getYear())
+                        .eq(Assessment::getMonth, assessmentCountDTO.getMonth())
+                        .in(Assessment::getApplicationId, assessmentCountDTO.getAppliedIds())
+        ));
     }
 }

@@ -17,3 +17,12 @@ export function addAssessment(data) {
     data: data
   })
 }
+
+// 岗位、状态、年月查询待考核数量
+export function getAssessmentCount(query) {
+  return request({
+    url: '/workstudy/assessment/count',
+    method: 'get',
+    params: query
+  })
+}
