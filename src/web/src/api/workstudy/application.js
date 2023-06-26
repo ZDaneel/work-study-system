@@ -26,3 +26,11 @@ export function listApplied(query) {
     params: query,
   });
 }
+
+// 查询合同详细
+export function getApplication(id) {
+  return request({
+    url: '/workstudy/application/' + id,
+    method: 'get'
+  })
+}

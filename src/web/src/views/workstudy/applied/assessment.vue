@@ -118,7 +118,7 @@
           />
         </el-form-item>
         <el-form-item label="工作天数" prop="days">
-          <el-input-number v-model="form.days" :min="0" :max="31" />
+          <el-input-number v-model="form.days" :min="0" :max="standardDays" />
         </el-form-item>
         <el-divider />
         <el-descriptions style="margin-left: 15em">
@@ -166,6 +166,7 @@
 
 <script setup name="Assessment">
 import { listAssessment, addAssessment } from "@/api/workstudy/assessment";
+import { getApplication } from "@/api/workstudy/application";
 import { reactive } from "vue";
 
 const { proxy } = getCurrentInstance();
@@ -181,6 +182,7 @@ const title = ref("");
 const total = ref(0);
 const route = useRoute();
 const applicationId = ref(route.params.applicationId);
+const standardDays = ref(0);
 
 const data = reactive({
   form: {},
@@ -221,6 +223,15 @@ function getList() {
   });
 }
 
+/** id查询application */
+function getApplicationDetail() {
+  getApplication(applicationId.value).then((res) => {
+    if (res.code === 200) {
+      standardDays.value = res.data.standardDays;
+    }
+  });
+}
+
 // 取消按钮
 function cancel() {
   open.value = false;
@@ -234,7 +245,7 @@ function reset() {
     yearMonth: null,
     year: null,
     month: null,
-    days: 0,
+    days: standardDays.value,
     applicationId: applicationId.value,
     techRequireScore: 25,
     workErrorScore: 20,
@@ -322,6 +333,7 @@ function handleExport(row) {
 }
 
 getList();
+getApplicationDetail();
 </script>
 
 <style>

@@ -10,6 +10,7 @@ import com.ruoyi.project.tool.utils.WordUtil;
 import com.ruoyi.project.workstudy.domain.Application;
 import com.ruoyi.project.workstudy.domain.EmploymentJob;
 import com.ruoyi.project.workstudy.service.IApplicationService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -85,5 +86,14 @@ public class ApplicationController extends BaseController {
         startPage();
         List<Application> list = applicationService.listApplication(application);
         return getDataTable(list);
+    }
+
+    /**
+     * 获取合同详细信息
+     */
+    @GetMapping(value = "/{id}")
+    public AjaxResult getInfo(@PathVariable("id") Long id)
+    {
+        return success(applicationService.getById(id));
     }
 }
