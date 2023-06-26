@@ -58,9 +58,9 @@ public class ApplicationController extends BaseController {
      */
     @PostMapping("/export")
     public void export(HttpServletResponse response, HttpServletRequest request, Application applicationOnlyId) {
-        String templatePath = exportConstant.getTemplatePath();
-        String tempDir = exportConstant.getTempDir();
-        String fileName = exportConstant.getTempFileName();
+        String templatePath = exportConstant.getLaborContractTemplatePath();
+        String tempDir = exportConstant.getLaborContractTempDir();
+        String fileName = exportConstant.getLaborContractTempFileName();
         Map<String, Object> params = new HashMap<>(8);
         Application application = applicationService.getContractInfoById(applicationOnlyId.getId());
         params.put("partA", application.getEmploymentPartyA());

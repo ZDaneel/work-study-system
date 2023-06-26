@@ -12,11 +12,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class ExportConstant {
     @Value("${export.laborContract.templatePath}")
-    private String templatePath;
+    private String laborContractTemplatePath;
 
     @Value("${export.laborContract.tempDir}")
-    private String tempDir;
+    private String laborContractTempDir;
 
     @Value("${export.laborContract.tempFileName}")
-    private String tempFileName;
+    private String laborContractTempFileName;
+
+    @Value("${export.assessment.templatePath}")
+    private String assessmentTemplatePath;
+
+    @Value("${export.assessment.tempFileName}")
+    private String assessmentTempFileName;
 }

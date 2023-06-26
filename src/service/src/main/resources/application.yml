@@ -149,4 +149,9 @@ export:
     # 临时文件名称
     tempFileName: temp.docx
     # 导出文件模板
-    templatePath: word/LaborContract.docx
+    templatePath: template/LaborContract.docx
+  assessment:
+    # 导出文件模板
+    templatePath: template/Assessment.xlsx
+    # 临时文件名称
+    tempFileName: temp.xlsx

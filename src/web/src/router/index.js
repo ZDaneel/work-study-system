@@ -157,7 +157,21 @@ export const dynamicRoutes = [
         meta: { title: '修改生成配置', activeMenu: '/tool/gen' }
       }
     ]
-  }
+  },
+  {
+    path: '/application/applied-assess',
+    component: Layout,
+    hidden: true,
+    permissions: ['system:dict:list'],
+    children: [
+      {
+        path: 'index/:applicationId(\\d+)',
+        component: () => import('@/views/workstudy/applied/assessment'),
+        name: 'Assessment',
+        meta: { title: '考核', activeMenu: '/application/applied' }
+      }
+    ]
+  },
 ]
 
 const router = createRouter({

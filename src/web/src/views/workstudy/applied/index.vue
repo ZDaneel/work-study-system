@@ -38,45 +38,70 @@
       </el-form-item>
     </el-form>
 
-    <el-table v-loading="loading" :data="appliedList" @selection-change="handleSelectionChange">
+    <el-table
+      v-loading="loading"
+      :data="appliedList"
+      @selection-change="handleSelectionChange"
+    >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="部门" align="center" prop="employmentPartyA" />
       <el-table-column label="岗位" align="center" prop="jobName" />
       <el-table-column label="姓名" align="center" prop="studentName" />
-      <el-table-column label="开始时间" align="center" prop="startTime" width="180">
+      <el-table-column
+        label="开始时间"
+        align="center"
+        prop="startTime"
+        width="180"
+      >
         <template #default="scope">
-          <span>{{ parseTime(scope.row.startTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.startTime, "{y}-{m}-{d}") }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="结束时间" align="center" prop="endTime" width="180">
+      <el-table-column
+        label="结束时间"
+        align="center"
+        prop="endTime"
+        width="180"
+      >
         <template #default="scope">
-          <span>{{ parseTime(scope.row.endTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.endTime, "{y}-{m}-{d}") }}</span>
         </template>
       </el-table-column>
       <el-table-column label="日工作时长" align="center" prop="hours" />
       <el-table-column label="基础工资" align="center" prop="baseSalary" />
-      <el-table-column label="绩效工资" align="center" prop="performanceSalary" />
+      <el-table-column
+        label="绩效工资"
+        align="center"
+        prop="performanceSalary"
+      />
       <el-table-column label="状态" align="center" prop="status">
         <template #default="scope">
-          <dict-tag :options="business_effective" :value="scope.row.status"/>
+          <dict-tag :options="business_effective" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <!-- <template #default="scope">
-          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:application:edit']">修改</el-button>
-          <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:application:remove']">删除</el-button>
-        </template> -->
+      <el-table-column
+        label="操作"
+        align="center"
+        class-name="small-padding fixed-width"
+      >
+        <template #default="scope">
+          <router-link
+            :to="'/application/applied-assess/index/' + scope.row.id"
+            class="link-type"
+          >
+            <span>考核</span>
+          </router-link>
+        </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
-      v-show="total>0"
+      v-show="total > 0"
       :total="total"
       v-model:page="queryParams.pageNum"
       v-model:limit="queryParams.pageSize"
       @pagination="getList"
     />
-
   </div>
 </template>
 
@@ -140,7 +165,7 @@ function getJobs() {
 
 // 多选框选中数据
 function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.id);
+  ids.value = selection.map((item) => item.id);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
