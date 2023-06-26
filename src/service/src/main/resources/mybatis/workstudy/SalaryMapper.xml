@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.workstudy.mapper.SalaryMapper">
+
+    <resultMap type="com.ruoyi.project.workstudy.domain.Salary" id="SalaryResult">
+        <result property="department" column="department"/>
+        <result property="jobName" column="job_name"/>
+        <result property="studentName" column="student_name"/>
+        <result property="studentId" column="student_id"/>
+        <result property="phone" column="phone"/>
+        <result property="baseSalary" column="base_salary"/>
+        <result property="basePerformanceSalary" column="base_performance_salary"/>
+        <result property="score" column="score"/>
+        <result property="standardDays" column="standard_days"/>
+        <result property="days" column="days"/>
+    </resultMap>
+
+    <select id="selectSalaryList"
+            parameterType="com.ruoyi.project.workstudy.domain.dto.SalaryExportDTO"
+            resultMap="SalaryResult">
+        select
+        employment.department as department,
+        job.name as job_name,
+        student.name as student_name,
+        student.student_id as student_id,
+        student.phone as phone,
+        application.base_salary as base_salary,
+        application.performance_salary as base_performance_salary,
+        assessment.total_score as score,
+        application.standard_days,
+        assessment.days
+        from application
+        left join student on student.id = application.student_id
+        left join job on job.id = application.job_id
+        left join employment on employment.id = application.employment_id
+        left join assessment on assessment.application_id = application.id
+        <where>
+            assessment.year = #{year}
+            and assessment.month = #{month}
+            <if test="status != null ">and application.status = #{status}</if>
+            <if test="employmentId != null ">and application.employment_id = #{employmentId}</if>
+            <if test="jobId != null ">and application.job_id = #{jobId}</if>
+        </where>
+    </select>
+
+</mapper>

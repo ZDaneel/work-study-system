@@ -38,12 +38,23 @@
       </el-form-item>
     </el-form>
 
+    <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
+        <el-button type="primary" plain icon="Download" @click="handleExport"
+          >导出酬金发放单</el-button
+        >
+      </el-col>
+      <right-toolbar
+        v-model:showSearch="showSearch"
+        @queryTable="getList"
+      ></right-toolbar>
+    </el-row>
+
     <el-table
       v-loading="loading"
       :data="appliedList"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="部门" align="center" prop="employmentPartyA" />
       <el-table-column label="岗位" align="center" prop="jobName" />
       <el-table-column label="姓名" align="center" prop="studentName" />
@@ -51,7 +62,7 @@
         label="开始时间"
         align="center"
         prop="startTime"
-        width="180"
+        width="120"
       >
         <template #default="scope">
           <span>{{ parseTime(scope.row.startTime, "{y}-{m}-{d}") }}</span>
@@ -61,12 +72,13 @@
         label="结束时间"
         align="center"
         prop="endTime"
-        width="180"
+        width="120"
       >
         <template #default="scope">
           <span>{{ parseTime(scope.row.endTime, "{y}-{m}-{d}") }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="月标准工作天数" align="center" prop="standardDays" width="120"/>
       <el-table-column label="日工作时长" align="center" prop="hours" />
       <el-table-column label="基础工资" align="center" prop="baseSalary" />
       <el-table-column
@@ -85,12 +97,19 @@
         class-name="small-padding fixed-width"
       >
         <template #default="scope">
-          <router-link
-            :to="'/application/applied-assess/index/' + scope.row.id"
-            class="link-type"
+          <el-button
+            link
+            type="primary"
+            icon="EditPen"
+            @click="handleLink(scope.row.id)"
+            >考核</el-button
           >
-            <span>考核</span>
-          </router-link>
+          <el-button
+            link
+            type="warning"
+            icon="SwitchButton"
+            >终止</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -108,7 +127,10 @@
 <script setup name="Applied">
 import { listAllValidEmployment } from "@/api/workstudy/employment";
 import { listApplied } from "@/api/workstudy/application";
+import { ElMessage, ElMessageBox } from "element-plus";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const { proxy } = getCurrentInstance();
 const { business_effective } = proxy.useDict("business_effective");
 
@@ -120,10 +142,8 @@ const multiple = ref(true);
 const loading = ref(false);
 const total = ref(0);
 const options = ref([]);
-const chooseJob = ref(null);
 
 const data = reactive({
-  form: {},
   queryParams: {
     pageNum: 1,
     pageSize: 10,
@@ -134,7 +154,7 @@ const data = reactive({
   },
 });
 
-const { queryParams, form } = toRefs(data);
+const { queryParams } = toRefs(data);
 
 /** 查询用工计划列表 */
 function getList() {
@@ -183,14 +203,58 @@ function handleQuery() {
       queryParams.value.jobId = queryParams.value.chooseJob[1];
     }
   }
-  console.log(queryParams.value);
   getList();
 }
 
 /** 重置按钮操作 */
 function resetQuery() {
   proxy.resetForm("queryRef");
+  queryParams.value.employmentId = null;
+  queryParams.value.jobId = null;
   handleQuery();
+}
+
+/** 导出酬金发放单 */
+function handleExport() {
+  ElMessageBox.prompt("请输入年月, 格式如2023-06", "导出酬金发放单", {
+    confirmButtonText: "OK",
+    cancelButtonText: "Cancel",
+    inputPattern: /\d{4}-(0[1-9]|1[0-2])/,
+    inputValue: "2023-06",
+    inputErrorMessage: "无效月份",
+  })
+    .then(({ value }) => {
+      const totalNum = total.value;
+      const year = value.split("-")[0];
+      const month = value.split("-")[1];
+      // 校验是否都填写了考核
+      // TODO
+      const params = {
+        ...queryParams.value,
+        year,
+        month,
+      };
+      proxy.download(
+        "workstudy/salary/export",
+        {
+          ...params,
+        },
+        `酬金发放单_${value}.xlsx`
+      );
+    })
+    .catch(() => {
+      ElMessage({
+        type: "info",
+        message: "取消导出",
+      });
+    });
+}
+
+/** 跳转路由 */
+function handleLink(id) {
+  router.push({
+    path: `/application/applied-assess/index/${id}`,
+  });
 }
 
 getJobs();
