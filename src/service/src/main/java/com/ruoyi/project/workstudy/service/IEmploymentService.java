@@ -71,4 +71,10 @@ public interface IEmploymentService extends IService<Employment>
      * @return 结果
      */
     public List<Employment> listAllValidEmployments();
+
+    /**
+     * 查询所有用工计划和岗位列表
+     * @return 结果
+     */
+    public List<Employment> listAllEmployments();
 }

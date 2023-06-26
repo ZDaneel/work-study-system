@@ -161,4 +161,13 @@ public class EmploymentServiceImpl extends ServiceImpl<EmploymentMapper, Employm
     public List<Employment> listAllValidEmployments() {
         return employmentMapper.listAllValidEmployments();
     }
+
+    /**
+     * 查询所有用工计划和未满人数的岗位
+     * @return 所有用工计划列表
+     */
+    @Override
+    public List<Employment> listAllEmployments() {
+        return employmentMapper.listValidEmployments();
+    }
 }

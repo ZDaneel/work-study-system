@@ -50,3 +50,11 @@ export function listAllValidEmployment() {
     method: 'get',
   })
 }
+
+// 查询所有用工计划和岗位列表
+export function listAllEmployment() {
+  return request({
+    url: '/workstudy/employment/list-all',
+    method: 'get',
+  })
+}

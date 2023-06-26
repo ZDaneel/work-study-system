@@ -60,6 +60,10 @@
         and limit_number > current_number
     </select>
 
+    <select id="listValidEmployments" resultMap="EmploymentResult">
+        <include refid="selectEmploymentVo"/>
+    </select>
+
     <insert id="insertEmployment" parameterType="com.ruoyi.project.workstudy.domain.Employment" useGeneratedKeys="true"
             keyProperty="id">
         insert into employment

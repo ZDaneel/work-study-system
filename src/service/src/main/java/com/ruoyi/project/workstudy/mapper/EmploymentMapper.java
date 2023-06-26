@@ -66,4 +66,10 @@ public interface EmploymentMapper extends BaseMapper<Employment>
      * @return 用工计划列表
      */
     public List<Employment> listAllValidEmployments();
+
+    /**
+     * 查询所有用工计划
+     * @return 用工计划列表
+     */
+    public List<Employment> listValidEmployments();
 }
