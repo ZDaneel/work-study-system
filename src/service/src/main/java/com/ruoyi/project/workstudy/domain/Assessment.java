@@ -79,4 +79,9 @@ public class Assessment {
      * 总分
      */
     private Long totalScore;
+
+    /**
+     * 工作天数
+     */
+    private Integer days;
 }

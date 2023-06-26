@@ -47,6 +47,7 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="年份" align="center" prop="year" />
       <el-table-column label="月份" align="center" prop="month" />
+      <el-table-column label="工作天数" align="center" prop="days" />
       <el-table-column
         label="技术要求达成率"
         width="120"
@@ -115,6 +116,9 @@
             placeholder="选择月份"
             value-format="YYYY-MM"
           />
+        </el-form-item>
+        <el-form-item label="工作天数" prop="days">
+          <el-input-number v-model="form.days" :min="0" :max="31" />
         </el-form-item>
         <el-divider />
         <el-descriptions style="margin-left: 15em">
@@ -230,6 +234,7 @@ function reset() {
     yearMonth: null,
     year: null,
     month: null,
+    days: 0,
     applicationId: applicationId.value,
     techRequireScore: 25,
     workErrorScore: 20,
@@ -277,8 +282,15 @@ function submitForm() {
       } else {
         proxy.$message.error("请选择月份");
       }
+      // 判断选择年月是否和目前列表中的年月重复
+      const isRepeat = assessmentList.value.some(
+        (item) => item.year == form.value.year && item.month == form.value.month
+      );
+      if (isRepeat) {
+        proxy.$message.error("该月份已存在");
+        return;
+      }
       form.value.totalScore = totalScore.value;
-      console.log(form.value);
       addAssessment(form.value).then((response) => {
         if (response.code == 200) {
           proxy.$message.success("添加成功");
@@ -300,10 +312,13 @@ function handleClose() {
 
 /** 导出按钮操作 */
 function handleExport(row) {
-  console.log(row);
-    proxy.download('workstudy/assessment/export', {
-      ...row
-    }, `月考核表_${new Date().getTime()}.xlsx`)
+  proxy.download(
+    "workstudy/assessment/export",
+    {
+      ...row,
+    },
+    `月考核表_${new Date().getTime()}.xlsx`
+  );
 }
 
 getList();

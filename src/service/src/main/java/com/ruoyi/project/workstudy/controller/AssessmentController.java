@@ -66,7 +66,6 @@ public class AssessmentController extends BaseController {
     @Log(title = "考核", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody Assessment assessment) {
-        System.out.println(assessment.toString());
         return toAjax(assessmentService.save(assessment));
     }
 

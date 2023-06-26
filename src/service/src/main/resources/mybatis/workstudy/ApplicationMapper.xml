@@ -13,6 +13,7 @@
         <result property="endTime" column="end_time"/>
         <result property="baseSalary" column="base_salary"/>
         <result property="performanceSalary" column="performance_salary"/>
+        <result property="standardDays" column="standard_days"/>
     </resultMap>
 
     <resultMap type="com.ruoyi.project.workstudy.domain.Application" id="ApplicationResult">
@@ -57,7 +58,8 @@
             application.end_time as end_time,
             base_salary,
             performance_salary,
-            application.status as status
+            application.status as status,
+            standard_days
         from application
             left join student on student.id = application.student_id
             left join employment on employment.id = application.employment_id
