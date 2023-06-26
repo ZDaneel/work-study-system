@@ -1,5 +1,6 @@
 package com.ruoyi.project.workstudy.controller;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.ruoyi.framework.aspectj.lang.annotation.Log;
 import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
 import com.ruoyi.framework.web.controller.BaseController;
@@ -95,5 +96,17 @@ public class ApplicationController extends BaseController {
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
         return success(applicationService.getById(id));
+    }
+
+    /**
+     * 终止合同
+     */
+    @Log(title = "终止合同", businessType = BusinessType.UPDATE)
+    @PutMapping
+    public AjaxResult terminate(@RequestBody Application application)
+    {
+        return toAjax(applicationService.update(new LambdaUpdateWrapper<Application>()
+                .eq(Application::getId, application.getId())
+                .set(Application::getStatus, 0)));
     }
 }

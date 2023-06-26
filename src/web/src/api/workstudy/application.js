@@ -34,3 +34,12 @@ export function getApplication(id) {
     method: 'get'
   })
 }
+
+// 修改合同状态
+export function terminateApplication(data) {
+  return request({
+    url: '/workstudy/application',
+    method: 'put',
+    data: data
+  })
+}

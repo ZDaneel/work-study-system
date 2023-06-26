@@ -109,7 +109,14 @@
             @click="handleLink(scope.row.id)"
             >考核</el-button
           >
-          <el-button link type="warning" icon="SwitchButton">终止</el-button>
+          <el-button
+            link
+            type="warning"
+            icon="SwitchButton"
+            @click="handleTerminate(scope.row)"
+            v-if="scope.row.status === 1"
+            >终止</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -126,7 +133,7 @@
 
 <script setup name="Applied">
 import { listAllEmployment } from "@/api/workstudy/employment";
-import { listApplied } from "@/api/workstudy/application";
+import { listApplied, terminateApplication } from "@/api/workstudy/application";
 import { getAssessmentCount } from "@/api/workstudy/assessment";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useRouter } from "vue-router";
@@ -282,6 +289,19 @@ function handleExport() {
 function handleLink(id) {
   router.push({
     path: `/application/applied-assess/index/${id}`,
+  });
+}
+
+/** 终止合同 */
+function handleTerminate(row) {
+  terminateApplication({ id: row.id }).then((res) => {
+    if (res.code === 200) {
+      ElMessage({
+        type: "success",
+        message: "终止成功",
+      });
+      getList();
+    }
   });
 }
 
