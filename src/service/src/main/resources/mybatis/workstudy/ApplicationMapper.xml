@@ -69,6 +69,7 @@
             <if test="employmentId != null ">and application.employment_id = #{employmentId}</if>
             <if test="status != null ">and application.status = #{status}</if>
         </where>
+        ORDER BY status desc
     </select>
 
 </mapper>
