@@ -162,7 +162,7 @@ export const dynamicRoutes = [
     path: '/application/applied-assess',
     component: Layout,
     hidden: true,
-    permissions: ['system:dict:list'],
+    permissions: ['workstudy:student:list'],
     children: [
       {
         path: 'index/:applicationId(\\d+)',
