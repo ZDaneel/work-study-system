@@ -22,6 +22,24 @@
         </collection>
     </resultMap>
 
+    <resultMap type="com.ruoyi.project.workstudy.domain.Employment" id="ValidEmploymentResult">
+        <result property="id" column="id"/>
+        <result property="department" column="department"/>
+        <result property="content" column="content"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedTime" column="updated_time"/>
+        <result property="status" column="status"/>
+        <collection property="employmentJobs" ofType="com.ruoyi.project.workstudy.domain.EmploymentJob"
+                    select="selectValidEmploymentJobs" column="id">
+            <result property="jobId" column="job_id"/>
+            <result property="jobName" column="job_name"/>
+            <result property="limitNumber" column="limit_number"/>
+            <result property="currentNumber" column="current_number"/>
+        </collection>
+    </resultMap>
+
     <sql id="selectEmploymentVo">
         select employment.id,
                department,
@@ -46,7 +64,6 @@
         WHERE employment_job.employment_id = #{id}
     </select>
 
-
     <select id="selectEmploymentList" parameterType="com.ruoyi.project.workstudy.domain.Employment"
             resultMap="EmploymentResult">
         <include refid="selectEmploymentVo"/>
@@ -62,13 +79,24 @@
     </select>
 
     <!-- status为1且未满员 -->
-    <select id="listAllValidEmployments" resultMap="EmploymentResult">
+    <select id="listAllValidEmployments" resultMap="ValidEmploymentResult">
         <include refid="selectEmploymentVo"/>
         where status = 1
-        and limit_number > current_number
+    </select>
+    <select id="selectValidEmploymentJobs" resultType="com.ruoyi.project.workstudy.domain.EmploymentJob">
+        SELECT employment_job.job_id         AS job_id,
+               job.name                      AS job_name,
+               employment_job.limit_number   AS limit_number,
+               employment_job.current_number AS current_number
+        FROM employment_job
+                 INNER JOIN
+             job ON employment_job.job_id = job.id
+        WHERE employment_job.employment_id = #{id}
+            and limit_number > current_number
     </select>
 
-    <select id="listValidEmployments" resultMap="EmploymentResult">
+
+    <select id="listAllEmployments" resultMap="EmploymentResult">
         <include refid="selectEmploymentVo"/>
     </select>
 

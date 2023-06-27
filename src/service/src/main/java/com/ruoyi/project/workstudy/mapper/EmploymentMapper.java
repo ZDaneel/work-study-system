@@ -8,15 +8,14 @@ import com.ruoyi.project.workstudy.domain.EmploymentJob;
 
 /**
  * 用工计划Mapper接口
- * 
+ *
  * @author zyc
  * @date 2023-06-23
  */
-public interface EmploymentMapper extends BaseMapper<Employment>
-{
+public interface EmploymentMapper extends BaseMapper<Employment> {
     /**
      * 查询用工计划
-     * 
+     *
      * @param id 用工计划主键
      * @return 用工计划
      */
@@ -24,7 +23,7 @@ public interface EmploymentMapper extends BaseMapper<Employment>
 
     /**
      * 查询用工计划列表
-     * 
+     *
      * @param employment 用工计划
      * @return 用工计划集合
      */
@@ -32,7 +31,7 @@ public interface EmploymentMapper extends BaseMapper<Employment>
 
     /**
      * 新增用工计划
-     * 
+     *
      * @param employment 用工计划
      * @return 结果
      */
@@ -40,7 +39,7 @@ public interface EmploymentMapper extends BaseMapper<Employment>
 
     /**
      * 修改用工计划
-     * 
+     *
      * @param employment 用工计划
      * @return 结果
      */
@@ -48,7 +47,7 @@ public interface EmploymentMapper extends BaseMapper<Employment>
 
     /**
      * 删除用工计划
-     * 
+     *
      * @param id 用工计划主键
      * @return 结果
      */
@@ -56,7 +55,7 @@ public interface EmploymentMapper extends BaseMapper<Employment>
 
     /**
      * 批量删除用工计划
-     * 
+     *
      * @param ids 需要删除的数据主键集合
      * @return 结果
      */
@@ -64,20 +63,31 @@ public interface EmploymentMapper extends BaseMapper<Employment>
 
     /**
      * 查询所有有效的用工计划
+     *
      * @return 用工计划列表
      */
     public List<Employment> listAllValidEmployments();
 
     /**
      * 查询所有用工计划
+     *
      * @return 用工计划列表
      */
-    public List<Employment> listValidEmployments();
+    public List<Employment> listAllEmployments();
 
     /**
      * 查询用工计划下的岗位(拆分嵌套映射解决分页插件问题)
+     *
      * @param id employmentId
      * @return 岗位列表
      */
     public List<EmploymentJob> selectEmploymentJobs(Long id);
+
+    /**
+     * 查询有效的用工计划下的岗位(拆分嵌套映射解决分页插件问题)
+     *
+     * @param id employmentId
+     * @return 岗位列表
+     */
+    public List<EmploymentJob> selectValidEmploymentJobs(Long id);
 }

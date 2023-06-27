@@ -22,6 +22,24 @@
         </collection>
     </resultMap>
 
+    <resultMap type="com.ruoyi.project.workstudy.domain.Student" id="FilterStudentResult">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="department" column="department"/>
+        <result property="major" column="major"/>
+        <result property="sex" column="sex"/>
+        <result property="phone" column="phone"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedTime" column="updated_time"/>
+        <result property="status" column="status"/>
+        <result property="studentId" column="student_id"/>
+        <result property="isEcoHard" column="is_eco_hard"/>
+        <result property="isAssignedAccept" column="is_assigned_accept"/>
+        <collection property="jobIntentions" ofType="string">
+            <result column="job_name"/>
+        </collection>
+    </resultMap>
+
     <sql id="selectStudentVo">
         select student.id,
                student.name,
@@ -60,18 +78,31 @@
         </where>
     </select>
 
-    <select id="selectJobName" resultType="string">
-
-    </select>
-
     <select id="selectStudentById" parameterType="Long" resultMap="StudentResult">
         <include refid="selectStudentVo"/>
         where student.id = #{id}
     </select>
 
-    <select id="filterStudent" resultMap="StudentResult">
-        <include refid="selectStudentVo"/>
-        where status = 0 and (job_id = #{jobId} or is_assigned_accept = 1)
+    <!-- 申请中的学生，岗位意向一致或接受调剂-->
+    <select id="filterStudent" resultMap="FilterStudentResult">
+        select student.id,
+               student.name,
+               department,
+               major,
+               sex,
+               phone,
+               created_time,
+               updated_time,
+               status,
+               student.student_id,
+               is_eco_hard,
+               is_assigned_accept,
+               job.name as job_name
+        from student
+                 left join student_job on student.id = student_job.student_id
+                 left join job on student_job.job_id = job.id
+        where status = 0
+          and (job_id = #{jobId} or is_assigned_accept = 1)
     </select>
 
     <insert id="insertStudent" parameterType="com.ruoyi.project.workstudy.domain.Student" useGeneratedKeys="true"

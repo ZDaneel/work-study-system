@@ -168,6 +168,6 @@ public class EmploymentServiceImpl extends ServiceImpl<EmploymentMapper, Employm
      */
     @Override
     public List<Employment> listAllEmployments() {
-        return employmentMapper.listValidEmployments();
+        return employmentMapper.listAllEmployments();
     }
 }
