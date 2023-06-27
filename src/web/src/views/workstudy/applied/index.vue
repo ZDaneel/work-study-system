@@ -227,11 +227,11 @@ function resetQuery() {
 
 /** 导出酬金发放单 */
 function handleExport() {
-  ElMessageBox.prompt("请输入年月, 格式如2023-06", "导出酬金发放单", {
+  ElMessageBox.prompt("请输入年月, 格式为YYYY-MM", "导出酬金发放单", {
     confirmButtonText: "OK",
     cancelButtonText: "Cancel",
     inputPattern: /\d{4}-(0[1-9]|1[0-2])/,
-    inputValue: "2023-06",
+    inputValue: getPreviousMonth(),
     inputErrorMessage: "无效月份",
   })
     .then(({ value }) => {
@@ -312,6 +312,21 @@ function handleTerminate(row) {
       getList();
     }
   });
+}
+
+/** 获取上月 格式为2023-06 */
+function getPreviousMonth() {
+  const today = new Date();
+  let lastMonth = today.getMonth(); // getMonth() 返回的月份是0-11
+  if (lastMonth === 0) {
+    // 当前月份是1月，上个月是12月
+    lastMonth = 12;
+  } else {
+    lastMonth = lastMonth.toString().padStart(2, "0"); // 如果是一位数，在前面添加0
+  }
+  const year = today.getFullYear();
+  lastMonth = `${year}-${lastMonth}`;
+  return lastMonth;
 }
 
 getJobs();
