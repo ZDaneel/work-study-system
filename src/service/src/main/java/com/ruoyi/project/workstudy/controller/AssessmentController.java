@@ -98,6 +98,14 @@ public class AssessmentController extends BaseController {
      */
     @GetMapping("/count")
     public AjaxResult count(AssessmentCountDTO assessmentCountDTO) {
+        // 未选择合同，则查询所有
+        if (assessmentCountDTO.getAppliedIds() == null) {
+            return AjaxResult.success(assessmentService.count(
+                    new LambdaQueryWrapper<Assessment>()
+                            .eq(Assessment::getYear, assessmentCountDTO.getYear())
+                            .eq(Assessment::getMonth, assessmentCountDTO.getMonth())
+            ));
+        }
         return AjaxResult.success(assessmentService.count(
                 new LambdaQueryWrapper<Assessment>()
                         .eq(Assessment::getYear, assessmentCountDTO.getYear())

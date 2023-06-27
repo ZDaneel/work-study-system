@@ -240,6 +240,13 @@ function handleExport() {
       const month = value.split("-")[1];
       // 从appliedList中获取所有的合同id
       const appliedIds = appliedList.value.map((item) => item.id);
+      if (appliedIds.length === 0) {
+        ElMessage({
+          type: "warning",
+          message: "当前没有数据",
+        });
+        return;
+      }
       const countParams = {
         appliedIds,
         year,
@@ -249,7 +256,6 @@ function handleExport() {
       getAssessmentCount(countParams)
         .then((res) => {
           if (res.code === 200) {
-            console.log(res);
             const count = res.data;
             if (count === totalNum) {
               const params = {
