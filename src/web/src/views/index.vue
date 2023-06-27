@@ -72,6 +72,7 @@ const employmentDemandNum = ref(0);
 const totalApplicationNum = ref(0);
 const lastMonthWaitAssessNum = ref(0);
 
+/** 申请中学生数量 */
 function listApplyStudent() {
   listStudent({ status: 0 }).then((res) => {
     if (res.code === 200) {
@@ -80,6 +81,7 @@ function listApplyStudent() {
   });
 }
 
+/** 用工需求数量 */
 function listEmploymentDemand() {
   listAllValidEmployment().then((res) => {
     // 从data的每个类中获取employmentJobs对象数组，再从中获取每个的limitNumber和currentNumber，相减得到总数
@@ -95,6 +97,7 @@ function listEmploymentDemand() {
   });
 }
 
+/** 上个月待考核数量 */
 function listLastMonthWaitAssess() {
   listApplied({ status: 1 }).then((res) => {
     if (res.code === 200) {
@@ -114,7 +117,7 @@ function listLastMonthWaitAssess() {
     }
   });
 }
-
+/** 获取上个月的月份，一位则前面补0 */
 function getPreviousMonth() {
   const today = new Date();
   let lastMonth = today.getMonth(); // getMonth() 返回的月份是0-11
