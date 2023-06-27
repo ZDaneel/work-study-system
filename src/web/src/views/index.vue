@@ -23,7 +23,7 @@
           </el-statistic>
           <div class="statistic-footer">
             <div class="footer-item">
-              <span>全部生效中的合同数</span>
+              <span>全部生效中的合同数&nbsp</span>
               <span class="green">{{ totalApplicationNum }}</span>
             </div>
           </div>
@@ -58,14 +58,31 @@
     </el-row>
 
     <el-divider />
+
+    <div
+      class="echarts-box"
+      style="display: flex; justify-content: center; align-items: center"
+    >
+      <div
+        id="jobIntentionEcharts"
+        :style="{ width: '900px', height: '300px' }"
+      ></div>
+    </div>
   </div>
 </template>
 
 <script setup name="Index">
-import { listStudent } from "@/api/workstudy/student";
+import { listStudent, getStudentIntention } from "@/api/workstudy/student";
 import { listAllValidEmployment } from "@/api/workstudy/employment";
 import { getAssessmentCount } from "@/api/workstudy/assessment";
 import { listApplied } from "@/api/workstudy/application";
+import * as echarts from "echarts";
+import { onUnmounted } from "vue";
+let echart = echarts;
+
+onUnmounted(() => {
+  echart.dispose(document.getElementById("jobIntentionEcharts"));
+});
 
 const applyStudentNum = ref(0);
 const employmentDemandNum = ref(0);
@@ -83,7 +100,7 @@ function listApplyStudent() {
 
 /** 用工需求数量 */
 function listEmploymentDemand() {
-  listAllValidEmployment().then((res) => {
+  return listAllValidEmployment().then((res) => {
     // 从data的每个类中获取employmentJobs对象数组，再从中获取每个的limitNumber和currentNumber，相减得到总数
     if (res.code === 200) {
       let total = 0;
@@ -93,6 +110,7 @@ function listEmploymentDemand() {
         }, 0);
       });
       employmentDemandNum.value = total;
+      return res.data;
     }
   });
 }
@@ -109,7 +127,6 @@ function listLastMonthWaitAssess() {
         month: getPreviousMonth(),
       };
       getAssessmentCount(params).then((res) => {
-        console.log(res);
         if (res.code === 200) {
           lastMonthWaitAssessNum.value = totalApplicationNum.value - res.data;
         }
@@ -130,9 +147,77 @@ function getPreviousMonth() {
   return lastMonth;
 }
 
+// 获取学生对岗位的意向
+function listStudentIntention() {
+  return getStudentIntention().then((res) => {
+    if (res.code === 200) {
+      return res.data;
+    }
+  });
+}
+
+// 基础配置一下Echarts
+function initIntentionChart() {
+  listStudentIntention().then((studentIntention) => {
+    // 获取jobIntentionName和jobIntentionNum分别为x轴和y轴数组
+    const jobIntentionName = studentIntention.map(
+      (item) => item.jobIntentionName
+    );
+    const jobIntentionNum = studentIntention.map(
+      (item) => item.jobIntentionNum
+    );
+    // 将studentIntention转换为Echarts需要的格式，即name对应jobIntentionName，value对应jobIntentionNum
+    studentIntention = studentIntention.map((item) => {
+      return {
+        name: item.jobIntentionName,
+        value: item.jobIntentionNum,
+      };
+    });
+    let chart = echart.init(
+      document.getElementById("jobIntentionEcharts"),
+      "white"
+    );
+    // 把配置和数据放这里
+    chart.setOption({
+      title: {
+        text: "学生岗位意向",
+        left: "center",
+        top: "center",
+      },
+      tooltip: {
+        // 提示
+        trigger: "item", // 触发方式
+        formatter: "{a} <br/>{b}: {c} ({d}%)", // 提示的格式
+      },
+      legend: {
+        // 图例
+        orient: "horizontal",
+        x: "center",
+        y: "bottom",
+        data: jobIntentionName, // 图例的数据数组
+      },
+      series: [
+        {
+          name: "岗位意向",
+          type: "pie", // 设置图表类型为饼图
+          radius: "50%", // 饼图的半径，外半径为可视区尺寸（容器高宽中较小一项）的 55% 长度。
+          data: studentIntention,
+          radius: ["40%", "70%"],
+          roseType: 'area'
+        },
+      ],
+    });
+    window.onresize = function () {
+      //自适应大小
+      chart.resize();
+    };
+  });
+}
+
 listApplyStudent();
 listEmploymentDemand();
 listLastMonthWaitAssess();
+initIntentionChart();
 </script>
 
 <style scoped>
@@ -166,6 +251,7 @@ listLastMonthWaitAssess();
 
 .green {
   color: var(--el-color-success);
+  font-size: 18px;
 }
 .red {
   color: var(--el-color-error);

@@ -88,4 +88,12 @@ public class StudentController extends BaseController
     {
         return toAjax(studentService.deleteStudentByIds(ids));
     }
+
+    /**
+     * 获取所有学生对岗位的意向
+     */
+    @GetMapping("/intention")
+    public AjaxResult getStudentIntention(){
+        return success(studentService.getStudentIntention());
+    }
 }

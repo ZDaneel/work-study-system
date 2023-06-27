@@ -104,6 +104,12 @@
         where status = 0
           and (job_id = #{jobId} or is_assigned_accept = 1)
     </select>
+    <select id="getStudentIntention" resultType="com.ruoyi.project.workstudy.domain.dto.JobIntentionDTO">
+        select name as jobIntentionName, count(*) as jobIntentionNum
+        from student_job
+                 join job on job.id = student_job.job_id
+        group by student_job.job_id, jobIntentionName
+    </select>
 
     <insert id="insertStudent" parameterType="com.ruoyi.project.workstudy.domain.Student" useGeneratedKeys="true"
             keyProperty="id">

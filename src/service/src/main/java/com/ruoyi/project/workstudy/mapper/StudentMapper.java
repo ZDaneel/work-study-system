@@ -5,6 +5,7 @@ import java.util.List;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ruoyi.project.workstudy.domain.EmploymentJob;
 import com.ruoyi.project.workstudy.domain.Student;
+import com.ruoyi.project.workstudy.domain.dto.JobIntentionDTO;
 
 /**
  * 学生申请Mapper接口
@@ -75,4 +76,10 @@ public interface StudentMapper extends BaseMapper<Student>
      * @return 求职意向列表
      */
     List<String> selectStudentJobIntentions(Long id);
+
+    /**
+     * 查询学生的岗位意向
+     * @return 岗位意向列表
+     */
+    List<JobIntentionDTO> getStudentIntention();
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.project.workstudy.domain.EmploymentJob;
 import com.ruoyi.project.workstudy.domain.Student;
+import com.ruoyi.project.workstudy.domain.dto.JobIntentionDTO;
 
 /**
  * 学生申请Service接口
@@ -68,4 +69,10 @@ public interface IStudentService extends IService<Student>
      * @return 候选人列表
      */
     public List<Student> filterStudent(EmploymentJob employmentJob);
+
+    /**
+     * 获取学生的岗位意向
+     * @return 岗位意向列表
+     */
+    List<JobIntentionDTO> getStudentIntention();
 }

@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.project.workstudy.domain.EmploymentJob;
 import com.ruoyi.project.workstudy.domain.Job;
 import com.ruoyi.project.workstudy.domain.StudentJob;
+import com.ruoyi.project.workstudy.domain.dto.JobIntentionDTO;
 import com.ruoyi.project.workstudy.service.IJobService;
 import com.ruoyi.project.workstudy.service.IStudentJobService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -150,6 +151,15 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     @Override
     public List<Student> filterStudent(EmploymentJob employmentJob) {
         return studentMapper.filterStudent(employmentJob.getJobId());
+    }
+
+    /**
+     * 获取学生的岗位意向
+     * @return 学生的岗位意向
+     */
+    @Override
+    public List<JobIntentionDTO> getStudentIntention() {
+        return studentMapper.getStudentIntention();
     }
 
     /**

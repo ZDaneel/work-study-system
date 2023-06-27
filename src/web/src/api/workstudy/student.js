@@ -42,3 +42,11 @@ export function delStudent(id) {
     method: 'delete'
   })
 }
+
+// 获取学生对岗位的意向
+export function getStudentIntention() {
+  return request({
+    url: '/workstudy/student/intention',
+    method: 'get'
+  })
+}
