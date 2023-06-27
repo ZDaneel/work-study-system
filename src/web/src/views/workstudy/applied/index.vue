@@ -109,14 +109,17 @@
             @click="handleLink(scope.row.id)"
             >考核</el-button
           >
-          <el-button
-            link
-            type="warning"
-            icon="SwitchButton"
-            @click="handleTerminate(scope.row)"
+          <el-popconfirm
+            title="是否确认终止该合同"
+            @confirm="handleTerminate(scope.row)"
             v-if="scope.row.status === 1"
-            >终止</el-button
           >
+            <template #reference>
+              <el-button link type="warning" icon="SwitchButton"
+                >终止</el-button
+              >
+            </template>
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
