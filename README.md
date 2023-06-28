@@ -1,5 +1,11 @@
 # 高校学生勤工俭学系统  
 
+> 基于[RuoYi-Vue-3](https://github.com/yangzongzhuan/RuoYi-Vue3)和[RuoYi-Vue-fast](https://github.com/yangzongzhuan/RuoYi-Vue-fast)
+>
+> 环境要求JDK 17+
+
+------
+
 **基本需求：**
 
 高校勤工俭学基金办公室是帮助同学参加高校勤工俭学劳动的机构。人工管理中涉及对大量表格的查找，效率很低，工作人员负担很重，且易出差错。因此，该办公室需求建立一个高效、准确，可以自动生成各种表格和报表的微机管理系统。
