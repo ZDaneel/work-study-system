@@ -75,7 +75,7 @@ application表和student表、job表是一对一的关系，和employment表是�
 
 application表和assessment表是一对一的关系
 
-![image-20230628141339439](https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281413528.png)
+<img src="https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281413528.png" alt="image-20230628141339439" style="zoom:50%;" />
 
 ## 三、详细设计
 
@@ -92,7 +92,7 @@ application表和assessment表是一对一的关系
 
 - 学生对岗位的圆饼图：使用echart，通过student_job表查询出不同job的意向数量，使用group分组实现
 
-![image-20230628140119251](https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281401470.png)
+<img src="https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281401470.png" alt="image-20230628140119251" style="zoom:50%;" />
 
 ### 2. 学生申请
 
@@ -102,7 +102,7 @@ application表和assessment表是一对一的关系
 
 - 显示申请中的学生信息，包括姓名、学号、学院、专业班级、性别、联系方式、是否经济困难和是否接受分配
 
-![image-20230628140209757](https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281402993.png)
+<img src="https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281402993.png" alt="image-20230628140209757" style="zoom:50%;" />
 
 新增
 
@@ -115,20 +115,20 @@ application表和assessment表是一对一的关系
 
 - 添加填写规则，如果不符合规则就会提示警告信息
 
-![image-20230628140313539](https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281403706.png)
+<img src="https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281403706.png" alt="image-20230628140313539" style="zoom:50%;" />
 
 修改
 
 - 查询当前学生的基础信息和岗位意向
 - 填写表单同新增
 
-![image-20230628140345698](https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281403531.png)
+<img src="https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281403531.png" alt="image-20230628140345698" style="zoom:50%;" />
 
 删除
 
 - 选中学生进行删除
 
-![image-20230628140442353](https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281404532.png)
+<img src="https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281404532.png" alt="image-20230628140442353" style="zoom:50%;" />
 
 ### 3. 用工计划
 
@@ -137,7 +137,7 @@ application表和assessment表是一对一的关系
 - 搜索条件：部门、状态
 - 显示用工计划列表，包括部门、内容、开始时间、结束时间和状态
 
-![image-20230628140556438](https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281405264.png)
+<img src="https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281405264.png" alt="image-20230628140556438" style="zoom:50%;" />
 
 添加
 
@@ -147,20 +147,20 @@ application表和assessment表是一对一的关系
   - 岗位能够选择系统中存在的，也能够填写一个新的岗位
   - 填写岗位对应的需求人数
 
-![image-20230628140632947](https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281406116.png)
+<img src="https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281406116.png" alt="image-20230628140632947" style="zoom:50%;" />
 
 查看详情
 
 - 选中用工计划查看详情，包括部门、内容、开始时间、结束时间和岗位
 - 岗位信息包括具体的每个岗位信息，即岗位名称、限制人数和当前人数
 
-![image-20230628140821827](https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281408856.png)
+<img src="https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281408856.png" alt="image-20230628140821827" style="zoom:50%;" />
 
 删除
 
 - 选中用工计划删除
 
-![image-20230628140713699](https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281407199.png)
+<img src="https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281407199.png" alt="image-20230628140713699" style="zoom:50%;" />
 
 自动结束
 
@@ -168,7 +168,7 @@ application表和assessment表是一对一的关系
 
 使用定时任务，设为`0 0 1 * * ?`，即每天凌晨1点执行一次，扫描所有有效的用工计划，找出结束时间小于当前时间的任务，将其状态设置为0
 
-![image-20230628140950146](https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281409069.png)
+<img src="https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281409069.png" alt="image-20230628140950146" style="zoom:50%;" />
 
 ### 4. 应聘候选
 
@@ -177,7 +177,7 @@ application表和assessment表是一对一的关系
 - 首先查询出生效中的用工计划
 - 之后查询其对应的未满的岗位
 
-![image-20230628141920719](https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281419271.png)
+<img src="https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281419271.png" alt="image-20230628141920719" style="zoom:50%;" />
 
 生成候选名单
 
@@ -207,7 +207,7 @@ application表和assessment表是一对一的关系
 - 分数高的在前面
 - 分数一样时经济困难的在前面
 
-![image-20230628142447162](https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281424252.png)
+<img src="https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281424252.png" alt="image-20230628142447162" style="zoom:50%;" />
 
 填写合同信息
 
@@ -217,15 +217,15 @@ application表和assessment表是一对一的关系
   - 读取模版信息后替换为填写的合同信息
   - 浏览器自动下载
 
-![image-20230628142816274](https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281428239.png)
+<img src="https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281428239.png" alt="image-20230628142816274" style="zoom:50%;" />
 
 模版如下：
 
-![image-20230628143241959](https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281432026.png)
+<img src="https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281432026.png" alt="image-20230628143241959" style="zoom:50%;" />
 
 选中信息导出结果如下：
 
-![image-20230628143102990](https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281431177.png)
+<img src="https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281431177.png" alt="image-20230628143102990" style="zoom:50%;" />
 
 > 根据模版生成合同
 >
@@ -240,7 +240,7 @@ application表和assessment表是一对一的关系
 - 搜索条件：岗位、状态
 - 展示部门、岗位、姓名、开始时间、结束时间、月标准工作天数、日工作时长、基础工资、绩效工资和状态
 
-![image-20230628143439099](https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281434398.png)
+<img src="https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281434398.png" alt="image-20230628143439099" style="zoom:50%;" />
 
 酬金单生成
 
@@ -257,11 +257,11 @@ application表和assessment表是一对一的关系
 
 - 总工资 = 实际基础工资 + 实际绩效工资
 
-![image-20230628143802476](https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281438629.png)
+<img src="https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281438629.png" alt="image-20230628143802476" style="zoom:50%;" />
 
 导出酬金发放单如下：包括部门、岗位、姓名、学号、手机号、合同基本工资、合同绩效工资、考核得分百分比、标准工作天数、实际工作天数、实际基本工资、实际绩效工资和总工资
 
-![image-20230628145127856](https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281451367.png)
+<img src="https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281451367.png" alt="image-20230628145127856" style="zoom:50%;" />
 
 ### 6. 考核
 
@@ -272,14 +272,14 @@ application表和assessment表是一对一的关系
 - 搜索条件：年月
 - 展示年份、月份、工作天数、技术要求达成率、工作失误率、协作能力、交办事项完成率、工作态度和总分
 
-![image-20230628144613196](https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281446442.png)
+<img src="https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281446442.png" alt="image-20230628144613196" style="zoom:50%;" />
 
 添加月考核内容
 
 - 包括年月、本月的工作天数和5个考核项目的分数
 - 其中的工作天数会自动填写该合同的月标准工作天数
 
-![image-20230628144229889](https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281442889.png)
+<img src="https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281442889.png" alt="image-20230628144229889" style="zoom:50%;" />
 
 导出考核表：
 
@@ -288,11 +288,11 @@ application表和assessment表是一对一的关系
 
 月考核表模版：
 
-![image-20230628144843743](https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281448713.png)
+<img src="https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281448713.png" alt="image-20230628144843743" style="zoom:50%;" />
 
 导出月考核表：
 
-![image-20230628144907430](https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281449399.png)
+<img src="https://cdn.jsdelivr.net/gh/ZDaneel/cloudimg@main/img/202306281449399.png" alt="image-20230628144907430" style="zoom:50%;" />
 
 > 导出参考：[EasyExcel](https://easyexcel.opensource.alibaba.com/docs/current/quickstart/read)
 
