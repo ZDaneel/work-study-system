@@ -153,7 +153,7 @@
         ref="studentRef"
         :model="form"
         :rules="rules"
-        label-width="100px"
+        label-width="120px"
       >
         <el-form-item label="姓名" prop="name">
           <el-input v-model="form.name" placeholder="请输入姓名" />
@@ -280,6 +280,20 @@ const data = reactive({
   },
   rules: {
     name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
+    studentId: [{ required: true, message: "请输入学号", trigger: "blur" }],
+    phone: [{ required: true, message: "请输入联系方式", trigger: "blur" }],
+    department: [{ required: true, message: "请选择学院", trigger: "blur" }],
+    major: [{ required: true, message: "请输入专业班级", trigger: "blur" }],
+    sex: [{ required: true, message: "请选择性别", trigger: "blur" }],
+    isEcoHard: [
+      { required: true, message: "请选择是否经济困难", trigger: "blur" },
+    ],
+    isAssignedAccept: [
+      { required: true, message: "请选择是否接受分配", trigger: "blur" },
+    ],
+    jobIntentions: [
+      { required: true, message: "请选择岗位意向", trigger: "blur" },
+    ],
   },
 });
 

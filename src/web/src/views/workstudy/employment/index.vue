@@ -172,7 +172,7 @@
         <el-form-item label="部门" prop="department">
           <el-input v-model="form.department" placeholder="请输入部门" />
         </el-form-item>
-        <el-form-item label="内容">
+        <el-form-item label="内容" prop="content">
           <el-input v-model="form.content" placeholder="请输入内容" />
         </el-form-item>
         <el-form-item label="开始时间" prop="startTime">
@@ -271,7 +271,12 @@ const data = reactive({
     department: null,
     status: null,
   },
-  rules: {},
+  rules: {
+    department: [{ required: true, message: "请输入部门", trigger: "blur" }],
+    content: [{ required: true, message: "请输入内容", trigger: "blur" }],
+    startTime: [{ required: true, message: "请选择开始时间", trigger: "blur" }],
+    endTime: [{ required: true, message: "请选择结束时间", trigger: "blur" }],
+  },
 });
 
 const { queryParams, form, rules } = toRefs(data);
@@ -308,7 +313,13 @@ function reset() {
     startTime: null,
     endTime: null,
     status: null,
-    employmentJobs: [],
+    employmentJobs: [
+      {
+        key: 0,
+        jobName: null,
+        limitNumber: 1,
+      },
+    ],
   };
   proxy.resetForm("employmentRef");
 }

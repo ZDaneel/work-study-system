@@ -6,7 +6,7 @@
       :inline="true"
       v-show="showSearch"
     >
-      <el-form-item label="年月" prop="createdTime">
+      <el-form-item label="年月" prop="yearMonth">
         <el-date-picker
           v-model="queryParams.yearMonth"
           type="month"
@@ -194,7 +194,25 @@ const data = reactive({
     month: null,
     applicationId: applicationId.value,
   },
-  rules: null,
+  rules: {
+    yearMonth: [{ required: true, message: "请选择月份", trigger: "blur" }],
+    days: [{ required: true, message: "请输入工作天数", trigger: "blur" }],
+    techRequireScore: [
+      { required: true, message: "请输入技术要求达成率", trigger: "blur" },
+    ],
+    workErrorScore: [
+      { required: true, message: "请输入工作失误率", trigger: "blur" },
+    ],
+    collaborativeAbilityScore: [
+      { required: true, message: "请输入协作能力", trigger: "blur" },
+    ],
+    assignedCompletionScore: [
+      { required: true, message: "请输入交办事项完成率", trigger: "blur" },
+    ],
+    workingAttitudeScore: [
+      { required: true, message: "请输入工作态度", trigger: "blur" },
+    ],
+  }
 });
 
 const { queryParams, form, rules } = toRefs(data);
@@ -211,8 +229,8 @@ const totalScore = computed(() => {
 
 /** 查询月考核列表 */
 function getList() {
-  loading.value = false;
-  if (queryParams.value.yearMonth) {
+  loading.value = true;
+  if (queryParams.value.yearMonth !== null) {
     queryParams.value.year = queryParams.value.yearMonth.split("-")[0];
     queryParams.value.month = queryParams.value.yearMonth.split("-")[1];
   }
@@ -266,6 +284,8 @@ function handleQuery() {
 /** 重置按钮操作 */
 function resetQuery() {
   proxy.resetForm("queryRef");
+  queryParams.value.year = null;
+  queryParams.value.month = null;
   handleQuery();
 }
 

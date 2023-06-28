@@ -11,10 +11,10 @@
       </el-form-item>
     </el-form>
 
-    <el-row v-if="open" style="margin: 1em;">
-      岗位限制数量：{{chooseJobDetail.limitNumber}}
+    <el-row v-if="open" style="margin: 1em">
+      岗位限制数量：{{ chooseJobDetail.limitNumber }}
       <br />
-      岗位当前已招聘人数：{{chooseJobDetail.currentNumber}} 
+      岗位当前已招聘人数：{{ chooseJobDetail.currentNumber }}
     </el-row>
 
     <el-table v-loading="loading" :data="studentList" v-if="open">
@@ -74,7 +74,12 @@
       width="500px"
       append-to-body
     >
-      <el-form ref="applicationRef" :model="form" label-width="120px">
+      <el-form
+        ref="applicationRef"
+        :model="form"
+        label-width="120px"
+        :rules="rules"
+      >
         <el-form-item label="开始时间" prop="startTime">
           <el-date-picker
             clearable
@@ -99,7 +104,7 @@
           <el-input-number v-model="form.standardDays" :min="1" :max="31" />
         </el-form-item>
         <el-form-item label="日工作时长" prop="hours">
-          <el-input-number v-model="form.hours" :min="1" :max="4" />
+          <el-input-number v-model="form.hours" :min="1" :max="8" />
         </el-form-item>
         <el-form-item label="基础工资" prop="baseSalary">
           <el-input-number
@@ -150,9 +155,23 @@ const chooseJobDetail = ref({
 
 const data = reactive({
   form: {},
+  rules: {
+    startTime: [{ required: true, message: "请选择开始时间", trigger: "blur" }],
+    endTime: [{ required: true, message: "请选择结束时间", trigger: "blur" }],
+    standardDays: [
+      { required: true, message: "请输入月标准工作天数", trigger: "blur" },
+    ],
+    hours: [{ required: true, message: "请输入日工作时长", trigger: "blur" }],
+    baseSalary: [
+      { required: true, message: "请输入基础工资", trigger: "blur" },
+    ],
+    performanceSalary: [
+      { required: true, message: "请输入绩效工资", trigger: "blur" },
+    ],
+  },
 });
 
-const { form } = toRefs(data);
+const { form, rules } = toRefs(data);
 
 /** 获取用工计划和岗位列表 */
 function getJobs() {
@@ -173,6 +192,7 @@ function getJobs() {
 
 /** 处理候选名单的生成 */
 function handleGenerate() {
+  loading.value = true;
   if (!chooseJob.value) {
     return;
   }
@@ -182,7 +202,7 @@ function handleGenerate() {
     jobId,
   }).then((res) => {
     if (res.code === 200) {
-      chooseJobDetail.value = res.data; 
+      chooseJobDetail.value = res.data;
     }
   });
 
@@ -221,10 +241,10 @@ function reset() {
     jobId: null,
     startTime: null,
     endTime: null,
-    hours: null,
-    standardDays: null,
-    baseSalary: null,
-    performanceSalary: null,
+    hours: 0,
+    standardDays: 0,
+    baseSalary: 0,
+    performanceSalary: 0,
   };
   proxy.resetForm("applicationRef");
 }
