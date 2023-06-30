@@ -373,8 +373,10 @@ function submitForm() {
           newJobs.push(item);
         }
       });
-      if (newJobs.length > 0) {
-        addJobs(newJobs)
+      // newJobs提取出jobName到新的字符串数组
+      const newJobNames = newJobs.map((item) => item.jobName);
+      if (newJobNames.length > 0) {
+        addJobs(newJobNames)
           .then(() => {
             return getJobs();
           })
