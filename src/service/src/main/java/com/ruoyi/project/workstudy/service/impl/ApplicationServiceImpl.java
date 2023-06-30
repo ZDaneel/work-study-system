@@ -76,9 +76,7 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
     @Override
     public List<Student> listCandidate(EmploymentJob employmentJob) {
         List<Student> filterStudentList = studentService.filterStudent(employmentJob);
-        Map<Long, String> jobId2NameMap = getJobId2NameMap();
-        computeScore(filterStudentList, jobId2NameMap.get(employmentJob.getJobId()));
-        // 再增加第二个排序条件，即优先选择经济困难的学生
+        computeScore(filterStudentList, getJobId2NameMap().get(employmentJob.getJobId()));
         filterStudentList.sort(ApplicationServiceImpl::compareStudent);
         return filterStudentList;
     }
@@ -138,8 +136,8 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
      * @param jobName           岗位名称
      */
     private void computeScore(List<Student> filterStudentList, String jobName) {
-        double score;
-        for (Student student : filterStudentList) {
+        filterStudentList.forEach(student -> {
+            double score = 0;
             score = 0;
             // 岗位意向
             if (student.getJobIntentions().contains(jobName)) {
@@ -153,7 +151,7 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
                 score += Weight.IS_ECONOMIC_DIFFICULTY.getWeight();
             }
             student.setScore(score);
-        }
+        });
     }
 
     private enum Weight {
